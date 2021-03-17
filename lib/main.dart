@@ -1,7 +1,7 @@
 import 'package:swustflutter/pages/find_page.dart';
 import 'package:swustflutter/pages/personal_center.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'pages/login_page.dart';
 
 void main() {
@@ -19,6 +19,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        //此处
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        //此处
+        const Locale('zh', 'CH'),
+        const Locale('en', 'US'),
+      ],
       title: 'Baidu Disk',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

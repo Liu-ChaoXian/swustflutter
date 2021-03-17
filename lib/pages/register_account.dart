@@ -12,11 +12,14 @@ class _RegisterAccountState extends State<RegisterAccount> {
   final _borderRadius = BorderRadius.circular(6);
 
   String _accountText = '';
-  String _pwdText = '';
-  bool _isEnableLogin = false;
-  bool _obscureText = true;
+  String _pwdText1 = '';
+  String _pwdText2 = '';
+  bool _obscureText1 = true;
+  bool _obscureText2 = true;
   var _accountController = TextEditingController();
-  var _pwdController = TextEditingController();
+  var _pwdController1 = TextEditingController();
+  var _pwdController2 = TextEditingController();
+
 
   Widget _buildAccountEditTextField(String tips) {
     return Container(
@@ -45,13 +48,13 @@ class _RegisterAccountState extends State<RegisterAccount> {
     return Container(
       margin: EdgeInsets.only(top: 15),
       child: TextField(
-        controller: _pwdController,
+        controller: _pwdController1,
         onChanged: (text) {
-          _pwdText = text;
+          _pwdText1 = text;
           //_checkUserInput();
         },
         style: _normalFont,
-        obscureText: _obscureText, ///是否隐藏正在编辑的文本
+        obscureText: _obscureText1, ///是否隐藏正在编辑的文本
         decoration: InputDecoration(
             prefixIcon: Icon(Icons.lock),
             hintText: tips,
@@ -61,9 +64,42 @@ class _RegisterAccountState extends State<RegisterAccount> {
             border: OutlineInputBorder(
                 borderSide: BorderSide.none, borderRadius: _borderRadius),
             suffixIcon: IconButton(
-              onPressed: () => setState(() => _obscureText = !_obscureText),
+              onPressed: () => setState(() => _obscureText1 = !_obscureText1),
               icon: Image.asset(
-                _obscureText ? 'assets/closeEye.png' : 'assets/openEye.png',
+                _obscureText1 ? 'assets/closeEye.png' : 'assets/openEye.png',
+                width: 20,
+                height: 20,
+              ),
+              splashColor: Colors.transparent, // 去掉点击阴影效果
+              highlightColor: Colors.transparent, // 去掉点击阴影效果
+            )),
+      ),
+    );
+  }
+
+  Widget _buildAgainPwdEditTextField(String tips) {
+    return Container(
+      margin: EdgeInsets.only(top: 15),
+      child: TextField(
+        controller: _pwdController2,
+        onChanged: (text) {
+          _pwdText2 = text;
+          //_checkUserInput();
+        },
+        style: _normalFont,
+        obscureText: _obscureText2, ///是否隐藏正在编辑的文本
+        decoration: InputDecoration(
+            prefixIcon: Icon(Icons.lock),
+            hintText: tips,
+            filled: true,
+            fillColor: Color.fromARGB(255, 240, 240, 240),
+            contentPadding: EdgeInsets.only(left: 8),
+            border: OutlineInputBorder(
+                borderSide: BorderSide.none, borderRadius: _borderRadius),
+            suffixIcon: IconButton(
+              onPressed: () => setState(() => _obscureText2 = !_obscureText2),
+              icon: Image.asset(
+                _obscureText2 ? 'assets/closeEye.png' : 'assets/openEye.png',
                 width: 20,
                 height: 20,
               ),
@@ -113,7 +149,7 @@ class _RegisterAccountState extends State<RegisterAccount> {
           children: <Widget>[
             _buildAccountEditTextField('请输入手机号码'),
             _buildPwdEditTextField('请设置登录密码'),
-            _buildPwdEditTextField('确认密码'),
+            _buildAgainPwdEditTextField('确认密码'),
             _buildRegisterButton(),
           ],
         ),

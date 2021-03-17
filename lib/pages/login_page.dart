@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swustflutter/pages/forget_password.dart';
 import 'package:swustflutter/pages/register_account.dart';
-
+import 'package:flutter_swiper/flutter_swiper.dart';
 import '../config/constant.dart';
 
 class LoginPage extends StatefulWidget {
@@ -72,17 +72,18 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
+  List<String> picture = ['assets/image1.jpg','assets/image2.jpg','assets/image3.gif'];
   Widget _buildTopWidget() {
     return Container(
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Image.asset('assets/logo.jpg',
-            width: MediaQuery.of(context).size.width,
-            height: 200,
-            fit: BoxFit.cover),
-        ],
+      height: 200,
+      child: Swiper(
+        itemBuilder: (BuildContext context,int index){
+          return Image.asset(picture[index],fit: BoxFit.fill,);
+        },
+        itemCount: picture.length,
+        pagination: new SwiperPagination(),
+        loop: true,
+        autoplay: true,
       ),
     );
   }
@@ -145,34 +146,30 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildElseText() { ///忘记密码和注册账户
       return Container(
-        width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.only(top: 10),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            SizedBox(
-              width: 90,
-              child: FlatButton(
-                child: Text('立即注册', textAlign: TextAlign.left),
-                highlightColor: Colors.blue,
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                      RegisterAccount(),
-                  ));
-                },
-              )
+            FlatButton(
+              child: Text('立即注册'),
+              splashColor: Colors.transparent, // 去掉点击阴影效果
+              highlightColor: Colors.transparent,
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                    RegisterAccount(),
+                ));
+              },
             ),
-            Padding(padding: EdgeInsets.only(left: 120)),
-            SizedBox(
-                width: 100,
-                child: FlatButton(
-                  child: Text('忘记密码?', textAlign: TextAlign.right),
-                  highlightColor: Colors.blue,
-                  onPressed: () {
-                    Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context){
-                      return new ForgetPassWord();
-                    }));
-                  },
-                )
-            ),
+            FlatButton(
+              child: Text('忘记密码?'),
+              splashColor: Colors.transparent, // 去掉点击阴影效果
+              highlightColor: Colors.transparent,
+              onPressed: () {
+                Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context){
+                  return new ForgetPassWord();
+                }));
+              },
+            )
           ],
         ),
       );
@@ -202,6 +199,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('登 录',),
+        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: Column(

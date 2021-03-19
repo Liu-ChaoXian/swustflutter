@@ -34,8 +34,6 @@ class _LoginPageState extends State<LoginPage> {
      * 1、账户和密码均输入不为空
      * 2、当前记录的是否允许登录状态需要发生改变（注意这里不优化，可能导致大量无效重绘，
      *    如：已经允许登录，但是用户继续输入，此时没有必要频繁调用setState）
-     * 3、请思考如何解决当允许登录状态改变时，不重绘整个LoginPage，而是局部发生重绘优化性能，
-     *    在后期复杂场景下有助于性能提升。
      */
     if (_accountText.isNotEmpty && _pwdText.isNotEmpty) {
       if (_isEnableLogin) return;
@@ -56,8 +54,13 @@ class _LoginPageState extends State<LoginPage> {
       prefs.setString(Constant.userAccount, _accountText);
       prefs.setString(Constant.userPassword, _pwdText);
 
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MyHomePage()));
+      /// 设置跳转到主页
+      Navigator.of(context).pushAndRemoveUntil(
+          new MaterialPageRoute(builder: (context)=> MyHomePage()),
+              (route) => route == null
+      );
+//      Navigator.push(
+//          context, MaterialPageRoute(builder: (context) => MyHomePage()));
     };
   }
 
@@ -92,6 +95,7 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       margin: EdgeInsets.only(top: 20),
       child: TextField(
+        keyboardType: TextInputType.phone,
         controller: _accountController,
         onChanged: (text) {
           _accountText = text;

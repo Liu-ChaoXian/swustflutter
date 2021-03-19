@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:swustflutter/model/experiment_info.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 
 ///实验室详细信息界面
 class DetailInfo extends StatelessWidget{
 
   ExperimentInfo experimentInfo;
   DetailInfo({this.experimentInfo});
+  final _normalFont = const TextStyle(fontSize: 18.0);
+  final _titleFont = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600);
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +23,148 @@ class DetailInfo extends StatelessWidget{
           },
         ),
       ),
-      body: Column(
-        children: <Widget>[
-          Image.asset(
-              experimentInfo.imageLink,
-              width: MediaQuery.of(context).size.width,
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
               height: 200,
-              fit: BoxFit.cover),
-          Text('负责人：' + experimentInfo.director),
-          Text('实验室地址：' + experimentInfo.experimentAddress),
-          Text('详细信息：' + experimentInfo.detailInfo),
-        ],
-      ),
+              child: Swiper(
+                itemBuilder: (BuildContext context,int index){
+                  return Image.asset( experimentInfo.imageLink[index],fit: BoxFit.fill,);
+                },
+                itemCount:  experimentInfo.imageLink.length,
+                pagination: new SwiperPagination(),
+                loop: true,
+                autoplay: true,
+              ),
+            ),
+            Container(
+                margin: EdgeInsets.all(10),
+                child:  Column(
+                  children: <Widget>[
+                    Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Card(
+                                color: Color.fromARGB(255, 240, 240, 240),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    SizedBox(width: 10,),
+                                    Text('实验室名称：', style: _titleFont),
+                                    Text('${experimentInfo.experimentName}', style: _normalFont),
+                                  ],
+                                )
+                            ),
+                            Card(
+                                color: Color.fromARGB(255, 240, 240, 240),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    SizedBox(width: 10,),
+                                    Text('实验室老师：', style: _titleFont),
+                                    Text('${experimentInfo.director}', style: _normalFont),
+                                  ],
+                                )
+                            ),
+                            Card(
+                                color: Color.fromARGB(255, 240, 240, 240),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    SizedBox(width: 10,),
+                                    Text('实验室地址：', style: _titleFont),
+                                    Text('${experimentInfo.experimentAddress}', style: _normalFont),
+                                  ],
+                                )
+                            ),
+                            Container(
+                              child: Card(
+                                color: Color.fromARGB(255, 240, 240, 240),
+                                child: Column(
+//                             mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        SizedBox(width: 10,),
+                                        Text('实验室简介：', style: _titleFont),
+                                      ],
+                                    ),
+
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 10),
+                                      child: Text('${experimentInfo.detailInfo}', style: _normalFont),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Card(
+                              color: Color.fromARGB(255, 240, 240, 240),
+                              child: Column(
+//                             mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      SizedBox(width: 10,),
+                                      Text('实验室成果：', style: _titleFont),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Text('${experimentInfo.achievement}', style: _normalFont),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Card(
+                              color: Color.fromARGB(255, 240, 240, 240),
+                              child: Column(
+//                             mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      SizedBox(width: 10,),
+                                      Text('招新时间：', style: _titleFont),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Text('${experimentInfo.time}', style: _normalFont),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              child: RaisedButton(
+                                child: Text("申 请 加 入", style: _normalFont),
+                                color: Colors.blue,
+                                disabledColor: Colors.black12,
+                                textColor: Colors.white,
+                                disabledTextColor: Colors.black12,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                onPressed: () {
+
+                                },
+                              ),
+                            )
+                          ],
+                        )
+                    )
+                  ],
+                )
+            ),
+          ],
+        ),
+      )
     );
   }
 }

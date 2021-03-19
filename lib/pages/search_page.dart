@@ -206,7 +206,7 @@ class SearchPageState extends State<SearchPage> {
             width: 60,
             alignment: Alignment.centerLeft,
             child: FlatButton(
-              child: new Text('取消', style: TextStyle(color: Colors.blue)),
+              child: new Text('取消', style: TextStyle(color: Colors.blue, fontSize: 14)),
               onPressed: () => setState(() => Navigator.of(context).pop()),
               splashColor: Colors.transparent, // 去掉点击阴影效果
               highlightColor: Colors.transparent, // 去掉点击阴影效果

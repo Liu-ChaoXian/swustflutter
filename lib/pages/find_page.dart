@@ -29,9 +29,11 @@ class _FindPageState extends State<FindPage>{
       experimentName: '软件测试实验室',
       experimentID: 1,
       experimentAddress: '东九A238',
-      detailInfo: '软件测试实验是一个很棒的实验室！！！',
+      detailInfo: '软件测试实验是一个很棒的实验室！！！软件测试实验是一个很棒的实验室！！！',
       director: '潘娅',
-      imageLink: 'assets/logo.jpg'
+      imageLink: ['assets/image1.jpg','assets/image2.jpg','assets/image3.gif'],
+      achievement: '各类比赛斩获佳绩',
+      time: '每年6月份'
     ),
     ExperimentInfo(
         experimentName: '移动互联网实验室',
@@ -39,47 +41,137 @@ class _FindPageState extends State<FindPage>{
         experimentAddress: '东九A240',
         detailInfo: '移动互联网实验是一个很棒的实验室！！！',
         director: '李从磊',
-        imageLink: 'assets/logo.jpg'
+        imageLink: ['assets/image1.jpg','assets/image2.jpg','assets/image3.gif'],
+        achievement: '各类比赛斩获佳绩',
+        time: '每年6月份'
     ),
     ExperimentInfo(
-        experimentName: '知识工程实验室',
+        experimentName: '数据与知识工程实验室',
         experimentID: 3,
         experimentAddress: '东九A236',
-        detailInfo: '知识工程实验是一个很棒的实验室！！！',
+        detailInfo: '数据与知识工程实验室是一个从事前后端开发和数据处理的实验室，拥有颇多成果'
+            '（(SWUST Online Judge, isearch舆情监测平台等，卓越班招新系统等)，每年实验室都有'
+            '入职bat的学长学姐。加入我们，你将不会后悔自己的选择，数据与知识工程实验室期待你的加入!'
+            '前端:前端技术一般分为前端设计和前端开发，前端设计可以理解为网站的视觉设计,前端开发则是'
+            '网站的前台代码实现,包括基本的HTML和CSS以及javascript后端:后端开发一般也叫做后台,其负'
+            '责是网站后台逻辑的设计和实现还有用户及网站的数据的保存和读取。'
+            '数据:数据分析是指用适当的编程语言来收集数据,进行统计分析放大对收集来的达两数据进行分'
+            '析,将他们加以汇总和理解并消化,以求最大化的开发数据的作用。',
         director: '杨春明',
-        imageLink: 'assets/logo.jpg'
+        imageLink: ['assets/image1.jpg','assets/image2.jpg','assets/image3.gif'],
+        achievement: 'SWUST Online Judge, isearch舆情监测平台等，卓越班招新系统等',
+        time: '每年6月份'
     ),
     ExperimentInfo(
-        experimentName: '知识工程实验室',
-        experimentID: 3,
-        experimentAddress: '东九A236',
-        detailInfo: '知识工程实验是一个很棒的实验室！！！',
-        director: '杨春明',
-        imageLink: 'assets/logo.jpg'
+        experimentName: '软件测试实验室',
+        experimentID: 1,
+        experimentAddress: '东九A238',
+        detailInfo: '软件测试实验是一个很棒的实验室！！！软件测试实验是一个很棒的实验室！！！',
+        director: '潘娅',
+        imageLink: ['assets/image1.jpg','assets/image2.jpg','assets/image3.gif'],
+        achievement: '各类比赛斩获佳绩',
+        time: '每年6月份'
     ),
     ExperimentInfo(
-        experimentName: '知识工程实验室',
-        experimentID: 3,
-        experimentAddress: '东九A236',
-        detailInfo: '知识工程实验是一个很棒的实验室！！！',
-        director: '杨春明',
-        imageLink: 'assets/logo.jpg'
+        experimentName: '移动互联网实验室',
+        experimentID: 2,
+        experimentAddress: '东九A240',
+        detailInfo: '移动互联网实验是一个很棒的实验室！！！',
+        director: '李从磊',
+        imageLink: ['assets/image1.jpg','assets/image2.jpg','assets/image3.gif'],
+        achievement: '各类比赛斩获佳绩',
+        time: '每年6月份'
     ),
     ExperimentInfo(
-        experimentName: '知识工程实验室',
+        experimentName: '数据与知识工程实验室',
         experimentID: 3,
         experimentAddress: '东九A236',
-        detailInfo: '知识工程实验是一个很棒的实验室！！！',
+        detailInfo: '数据与知识工程实验室是一个从事前后端开发和数据处理的实验室，拥有颇多成果'
+            '（(SWUST Online Judge, isearch舆情监测平台等，卓越班招新系统等)，每年实验室都有'
+            '入职bat的学长学姐。加入我们，你将不会后悔自己的选择，数据与知识工程实验室期待你的加入!'
+            '前端:前端技术一般分为前端设计和前端开发，前端设计可以理解为网站的视觉设计,前端开发则是'
+            '网站的前台代码实现,包括基本的HTML和CSS以及javascript后端:后端开发一般也叫做后台,其负'
+            '责是网站后台逻辑的设计和实现还有用户及网站的数据的保存和读取。'
+            '数据:数据分析是指用适当的编程语言来收集数据,进行统计分析放大对收集来的达两数据进行分'
+            '析,将他们加以汇总和理解并消化,以求最大化的开发数据的作用。',
         director: '杨春明',
-        imageLink: 'assets/logo.jpg'
+        imageLink: ['assets/image1.jpg','assets/image2.jpg','assets/image3.gif'],
+        achievement: 'SWUST Online Judge, isearch舆情监测平台等，卓越班招新系统等',
+        time: '每年6月份'
     ),
     ExperimentInfo(
-        experimentName: '知识工程实验室',
+        experimentName: '软件测试实验室',
+        experimentID: 1,
+        experimentAddress: '东九A238',
+        detailInfo: '软件测试实验是一个很棒的实验室！！！软件测试实验是一个很棒的实验室！！！',
+        director: '潘娅',
+        imageLink: ['assets/image1.jpg','assets/image2.jpg','assets/image3.gif'],
+        achievement: '各类比赛斩获佳绩',
+        time: '每年6月份'
+    ),
+    ExperimentInfo(
+        experimentName: '移动互联网实验室',
+        experimentID: 2,
+        experimentAddress: '东九A240',
+        detailInfo: '移动互联网实验是一个很棒的实验室！！！',
+        director: '李从磊',
+        imageLink: ['assets/image1.jpg','assets/image2.jpg','assets/image3.gif'],
+        achievement: '各类比赛斩获佳绩',
+        time: '每年6月份'
+    ),
+    ExperimentInfo(
+        experimentName: '数据与知识工程实验室',
         experimentID: 3,
         experimentAddress: '东九A236',
-        detailInfo: '知识工程实验是一个很棒的实验室！！！',
+        detailInfo: '数据与知识工程实验室是一个从事前后端开发和数据处理的实验室，拥有颇多成果'
+            '（(SWUST Online Judge, isearch舆情监测平台等，卓越班招新系统等)，每年实验室都有'
+            '入职bat的学长学姐。加入我们，你将不会后悔自己的选择，数据与知识工程实验室期待你的加入!'
+            '前端:前端技术一般分为前端设计和前端开发，前端设计可以理解为网站的视觉设计,前端开发则是'
+            '网站的前台代码实现,包括基本的HTML和CSS以及javascript后端:后端开发一般也叫做后台,其负'
+            '责是网站后台逻辑的设计和实现还有用户及网站的数据的保存和读取。'
+            '数据:数据分析是指用适当的编程语言来收集数据,进行统计分析放大对收集来的达两数据进行分'
+            '析,将他们加以汇总和理解并消化,以求最大化的开发数据的作用。',
         director: '杨春明',
-        imageLink: 'assets/logo.jpg'
+        imageLink: ['assets/image1.jpg','assets/image2.jpg','assets/image3.gif'],
+        achievement: 'SWUST Online Judge, isearch舆情监测平台等，卓越班招新系统等',
+        time: '每年6月份'
+    ),
+    ExperimentInfo(
+        experimentName: '软件测试实验室',
+        experimentID: 1,
+        experimentAddress: '东九A238',
+        detailInfo: '软件测试实验是一个很棒的实验室！！！软件测试实验是一个很棒的实验室！！！',
+        director: '潘娅',
+        imageLink: ['assets/image1.jpg','assets/image2.jpg','assets/image3.gif'],
+        achievement: '各类比赛斩获佳绩',
+        time: '每年6月份'
+    ),
+    ExperimentInfo(
+        experimentName: '移动互联网实验室',
+        experimentID: 2,
+        experimentAddress: '东九A240',
+        detailInfo: '移动互联网实验是一个很棒的实验室！！！',
+        director: '李从磊',
+        imageLink: ['assets/image1.jpg','assets/image2.jpg','assets/image3.gif'],
+        achievement: '各类比赛斩获佳绩',
+        time: '每年6月份'
+    ),
+    ExperimentInfo(
+        experimentName: '数据与知识工程实验室',
+        experimentID: 3,
+        experimentAddress: '东九A236',
+        detailInfo: '数据与知识工程实验室是一个从事前后端开发和数据处理的实验室，拥有颇多成果'
+            '（(SWUST Online Judge, isearch舆情监测平台等，卓越班招新系统等)，每年实验室都有'
+            '入职bat的学长学姐。加入我们，你将不会后悔自己的选择，数据与知识工程实验室期待你的加入!'
+            '前端:前端技术一般分为前端设计和前端开发，前端设计可以理解为网站的视觉设计,前端开发则是'
+            '网站的前台代码实现,包括基本的HTML和CSS以及javascript后端:后端开发一般也叫做后台,其负'
+            '责是网站后台逻辑的设计和实现还有用户及网站的数据的保存和读取。'
+            '数据:数据分析是指用适当的编程语言来收集数据,进行统计分析放大对收集来的达两数据进行分'
+            '析,将他们加以汇总和理解并消化,以求最大化的开发数据的作用。',
+        director: '杨春明',
+        imageLink: ['assets/image1.jpg','assets/image2.jpg','assets/image3.gif'],
+        achievement: 'SWUST Online Judge, isearch舆情监测平台等，卓越班招新系统等',
+        time: '每年6月份'
     ),
   ];
 

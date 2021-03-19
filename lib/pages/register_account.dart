@@ -10,7 +10,7 @@ class _RegisterAccountState extends State<RegisterAccount> {
 
   final _normalFont = const TextStyle(fontSize: 18.0);
   final _borderRadius = BorderRadius.circular(6);
-
+  bool _isEnableLogin = false;
   String _accountText = '';
   String _pwdText1 = '';
   String _pwdText2 = '';
@@ -20,15 +20,35 @@ class _RegisterAccountState extends State<RegisterAccount> {
   var _pwdController1 = TextEditingController();
   var _pwdController2 = TextEditingController();
 
+  void _checkUserInput() {
+    /**
+     * 是否允许登录按钮重绘条件：
+     * 1、账户和密码均输入不为空
+     * 2、当前记录的是否允许登录状态需要发生改变（注意这里不优化，可能导致大量无效重绘，
+     *    如：已经允许登录，但是用户继续输入，此时没有必要频繁调用setState）
+     */
+    print('当前状态  ${_isEnableLogin}');
+    if (_accountText.isNotEmpty && _pwdText1.isNotEmpty && _pwdText2.isNotEmpty) {
+      print('进入if  ${_isEnableLogin}');
+      if (_isEnableLogin) return;
+    } else {
+      if (!_isEnableLogin) return;
+    }
+
+    setState(() {
+      _isEnableLogin = !_isEnableLogin;
+    });
+  }
 
   Widget _buildAccountEditTextField(String tips) {
     return Container(
       margin: EdgeInsets.only(top: 40),
       child: TextField(
+        keyboardType: TextInputType.phone,
         controller: _accountController,
         onChanged: (text) {
           _accountText = text;
-          //_checkUserInput();
+          _checkUserInput();
         },
         style: _normalFont,
         decoration: InputDecoration(
@@ -51,7 +71,7 @@ class _RegisterAccountState extends State<RegisterAccount> {
         controller: _pwdController1,
         onChanged: (text) {
           _pwdText1 = text;
-          //_checkUserInput();
+          _checkUserInput();
         },
         style: _normalFont,
         obscureText: _obscureText1, ///是否隐藏正在编辑的文本
@@ -84,7 +104,7 @@ class _RegisterAccountState extends State<RegisterAccount> {
         controller: _pwdController2,
         onChanged: (text) {
           _pwdText2 = text;
-          //_checkUserInput();
+          _checkUserInput();
         },
         style: _normalFont,
         obscureText: _obscureText2, ///是否隐藏正在编辑的文本
@@ -110,6 +130,13 @@ class _RegisterAccountState extends State<RegisterAccount> {
     );
   }
 
+  _getLoginButtonPressed() {
+    if (!_isEnableLogin) return null;
+    return (){
+
+    };
+  }
+
   Widget _buildRegisterButton() {  ///注册按钮
     return Container(
       margin: EdgeInsets.only(top: 15),
@@ -124,9 +151,7 @@ class _RegisterAccountState extends State<RegisterAccount> {
         shape: RoundedRectangleBorder(
           borderRadius: _borderRadius,
         ),
-        onPressed: () {
-
-        },
+        onPressed: _getLoginButtonPressed(),
       ),
     );
   }

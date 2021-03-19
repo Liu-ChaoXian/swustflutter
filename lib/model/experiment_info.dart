@@ -14,11 +14,17 @@ class ExperimentInfo{
   ///实验室负责人
   String director;
 
-  ///详细信息
+  ///实验室简介
   String detailInfo;
 
-  ///图片信息
-  String imageLink;
+  ///图片信息  可以保存多张图片
+  List<String> imageLink;
+
+  ///实验室成果
+  String achievement;
+
+  ///实验室招新时间
+  String time;
 
   ExperimentInfo({
     this.experimentName,
@@ -27,6 +33,8 @@ class ExperimentInfo{
     this.director,
     this.detailInfo,
     this.imageLink,
+    this.achievement,
+    this.time
   });
 
   String getName(){

@@ -15,4 +15,15 @@ class UserInfo {///用户信息
   String major;
   /// 邮箱
   String email;
+
+  UserInfo({
+    this.userName,
+    this.imageLink,
+    this.phone,
+    this.realName,
+    this.studyID,
+    this.classInfo,
+    this.major,
+    this.email
+  });
 }

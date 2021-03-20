@@ -2,6 +2,7 @@ import 'package:swustflutter/config/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swustflutter/pages/login/login_page.dart';
+import 'package:swustflutter/pages/mine/my_experiment.dart';
 import 'user_page.dart';
 import 'add_experiment.dart';
 import '../../model/user_info.dart';
@@ -72,25 +73,22 @@ class _PersonalCenterState extends State<PersonalCenter> {
   /// 我的实验室
   Widget _buildMyExperiment() {
     return Container(
-      height: 50,
-      decoration: BoxDecoration(
-        color: Color.fromARGB(255, 240, 240, 240),
-        borderRadius: BorderRadius.all(Radius.circular(15.0)),
-        //设置四周边框
+        height: 50,
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 240, 240, 240),
+          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+          //设置四周边框
 //        border: new Border.all(width: 1, color: Colors.grey),
-      ),
-      child: ListTile(
-        leading: Icon(Icons.info),
-        title: Text('我的实验室', style: _normalFont),
-        trailing: Icon(Icons.navigate_next),
-        onTap: () {
-          /// 设置跳转到我的实验室界面
-          Navigator.of(context).pushAndRemoveUntil(
-              new MaterialPageRoute(builder: (context) => LoginPage()),
-              (route) => route == null);
-        },
-      ),
-    );
+        ),
+        child: ListTile(
+            leading: Icon(Icons.info),
+            title: Text('我的实验室', style: _normalFont),
+            trailing: Icon(Icons.navigate_next),
+            onTap: () {
+              /// 设置跳转到我的实验室界面
+              Navigator.of(context).push(
+                  new MaterialPageRoute(builder: (context) => MyExperiment()));
+            }));
   }
 
   _addExperiment() {

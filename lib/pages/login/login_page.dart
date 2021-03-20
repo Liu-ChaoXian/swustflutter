@@ -1,10 +1,10 @@
 import 'package:swustflutter/main.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:swustflutter/pages/forget_password.dart';
-import 'package:swustflutter/pages/register_account.dart';
+import 'package:swustflutter/pages/login/forget_password.dart';
+import 'package:swustflutter/pages/login/register_account.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import '../config/constant.dart';
+import '../../config/constant.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -56,15 +56,15 @@ class _LoginPageState extends State<LoginPage> {
 
       /// 设置跳转到主页
       Navigator.of(context).pushAndRemoveUntil(
-          new MaterialPageRoute(builder: (context)=> MyHomePage()),
-              (route) => route == null
-      );
+          new MaterialPageRoute(builder: (context) => MyHomePage()),
+          (route) => route == null);
 //      Navigator.push(
 //          context, MaterialPageRoute(builder: (context) => MyHomePage()));
     };
   }
 
   @override
+  // ignore: must_call_super
   void initState() {
     _prefs.then((prefs) {
       _accountText = prefs.getString(Constant.userAccount) ?? '';
@@ -75,13 +75,20 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  List<String> picture = ['assets/image1.jpg','assets/image2.jpg','assets/image3.gif'];
+  List<String> picture = [
+    'assets/image1.jpg',
+    'assets/image2.jpg',
+    'assets/image3.gif'
+  ];
   Widget _buildTopWidget() {
     return Container(
       height: 200,
       child: Swiper(
-        itemBuilder: (BuildContext context,int index){
-          return Image.asset(picture[index],fit: BoxFit.fill,);
+        itemBuilder: (BuildContext context, int index) {
+          return Image.asset(
+            picture[index],
+            fit: BoxFit.fill,
+          );
         },
         itemCount: picture.length,
         pagination: new SwiperPagination(),
@@ -125,7 +132,9 @@ class _LoginPageState extends State<LoginPage> {
           _checkUserInput();
         },
         style: _normalFont,
-        obscureText: _obscureText, ///是否隐藏正在编辑的文本
+        obscureText: _obscureText,
+
+        ///是否隐藏正在编辑的文本
         decoration: InputDecoration(
             prefixIcon: Icon(Icons.lock),
             hintText: '请输入登录密码',
@@ -148,38 +157,43 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildElseText() { ///忘记密码和注册账户
-      return Container(
-        margin: EdgeInsets.only(top: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            FlatButton(
-              child: Text('立即注册'),
-              splashColor: Colors.transparent, // 去掉点击阴影效果
-              highlightColor: Colors.transparent,
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                    RegisterAccount(),
-                ));
-              },
-            ),
-            FlatButton(
-              child: Text('忘记密码?'),
-              splashColor: Colors.transparent, // 去掉点击阴影效果
-              highlightColor: Colors.transparent,
-              onPressed: () {
-                Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context){
-                  return new ForgetPassWord();
-                }));
-              },
-            )
-          ],
-        ),
-      );
+  Widget _buildElseText() {
+    ///忘记密码和注册账户
+    return Container(
+      margin: EdgeInsets.only(top: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          FlatButton(
+            child: Text('立即注册'),
+            splashColor: Colors.transparent, // 去掉点击阴影效果
+            highlightColor: Colors.transparent,
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RegisterAccount(),
+                  ));
+            },
+          ),
+          FlatButton(
+            child: Text('忘记密码?'),
+            splashColor: Colors.transparent, // 去掉点击阴影效果
+            highlightColor: Colors.transparent,
+            onPressed: () {
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (BuildContext context) {
+                return new ForgetPassWord();
+              }));
+            },
+          )
+        ],
+      ),
+    );
   }
 
-  Widget _buildLoginButton() {  ///登录按钮
+  Widget _buildLoginButton() {
+    ///登录按钮
     return Container(
       margin: EdgeInsets.only(top: 15),
       width: MediaQuery.of(context).size.width,
@@ -202,14 +216,18 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('登 录',),
+        title: Text(
+          '登 录',
+        ),
         automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _buildTopWidget(),///头部图片
+            _buildTopWidget(),
+
+            ///头部图片
             Container(
               padding: EdgeInsets.only(left: 25, right: 25),
               child: Column(

@@ -27,6 +27,7 @@ dependencies:
 
   shared_preferences: ^0.5.6+3
   sqflite: ^1.2.2+1
+  flip_card: ^0.2.1
   permission_handler: ^4.4.0
   flutter_swiper: ^1.1.6
 

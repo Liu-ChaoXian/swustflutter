@@ -1,8 +1,8 @@
-import 'package:swustflutter/pages/find_page.dart';
-import 'package:swustflutter/pages/personal_center.dart';
+import 'package:swustflutter/pages/find/find_page.dart';
+import 'package:swustflutter/pages/mine/personal_center.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'pages/login_page.dart';
+import 'pages/login/login_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

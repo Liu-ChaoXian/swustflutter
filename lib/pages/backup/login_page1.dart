@@ -1,10 +1,10 @@
 import 'package:swustflutter/main.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:swustflutter/pages/forget_password.dart';
-import 'package:swustflutter/pages/register_account1.dart';
+import 'package:swustflutter/pages/login/forget_password.dart';
+import 'package:swustflutter/pages/backup/register_account1.dart';
 
-import '../config/constant.dart';
+import '../../config/constant.dart';
 
 class LoginPage extends StatefulWidget {
   @override

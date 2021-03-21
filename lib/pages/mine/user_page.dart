@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../model/user_info.dart';
+import 'package:swustflutter/config/constant.dart';
 
 class UserPage extends StatelessWidget {
   UserInfo _userInfo;
@@ -56,7 +57,7 @@ class UserPage extends StatelessWidget {
                                     children: <Widget>[
                                       Text('用户头像：', style: _titleFont),
                                       ClipOval(
-                                        child: Image.asset(_userInfo.imageLink,
+                                        child: Image.network(Constant.baseUrl + _userInfo.userAvatarUrl,
                                             width: 64,
                                             height: 64,
                                             fit: BoxFit.cover),
@@ -100,7 +101,7 @@ class UserPage extends StatelessWidget {
                                         width: 10,
                                       ),
                                       Text('所在班级：', style: _titleFont),
-                                      Text('${_userInfo.classInfo}',
+                                      Text('${_userInfo.userClass}',
                                           style: _normalFont),
                                     ],
                                   )),
@@ -126,7 +127,7 @@ class UserPage extends StatelessWidget {
                                         width: 10,
                                       ),
                                       Text('用户邮箱：', style: _titleFont),
-                                      Text('${_userInfo.email}',
+                                      Text('${_userInfo.userEmail}',
                                           style: _normalFont),
                                     ],
                                   )),
@@ -139,7 +140,7 @@ class UserPage extends StatelessWidget {
                                         width: 10,
                                       ),
                                       Text('手机号码：', style: _titleFont),
-                                      Text('${_userInfo.phone}',
+                                      Text('${_userInfo.userPhone}',
                                           style: _normalFont),
                                     ],
                                   )),

@@ -1,48 +1,80 @@
+import 'package:flutter/cupertino.dart';
 import 'package:swustflutter/config/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:swustflutter/pages/login/forget_password.dart';
 import 'package:swustflutter/pages/login/login_page.dart';
+import 'package:swustflutter/pages/mine/change_pwd.dart';
 import 'user_page.dart';
 import 'add_experiment.dart';
 import '../../model/user_info.dart';
+import '../../client/swust_api_client.dart';
+import 'package:flushbar/flushbar.dart';
 
 class PersonalCenter extends StatefulWidget {
+  SwustAPIClient apiClient = new SwustAPIClient();
   @override
   State<StatefulWidget> createState() => _PersonalCenterState();
 }
 
 class _PersonalCenterState extends State<PersonalCenter> {
   final _normalFont = const TextStyle(fontSize: 18.0);
-  final _titlrFont =
-      const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400);
-  final List<String> level = ['', '普通用户', '实验室负责人', '系统管理员'];
-  UserInfo _userInfo = UserInfo(
-      userName: '测试用户1',
-      imageLink: 'assets/user-head.jpg',
-      phone: '13715554223',
-      realName: '江小白',
-      studyID: '5120173400',
-      classInfo: '计科1701',
-      major: '计算机科学与技术',
-      email: '363@qq.com');
+  final _titlrFont = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400);
+  final List<String> level = ['普通用户', '实验室负责人', '系统管理员'];
 
   String _userAccount = 'user1';
-  int _nameLength;
   int userLevel = 1;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  SwustAPIClient apiClient = new SwustAPIClient();
+
+  /// 获取用户个人信息
+  _getInfo(String token) async{
+    Map<String, dynamic> value =  await apiClient.getUserInfo(token);
+    print(value['userName']);
+    return value;
+  }
 
   @override
   void initState() {
-    _prefs.then((prefs) {
-      setState(() {
-        _userAccount = prefs.getString(Constant.userAccount) ?? 'user1';
-        _nameLength = _userAccount.length;
-        int temp = int.parse(_userAccount[_nameLength - 1]);
-        userLevel = temp > 0 ? temp : userLevel;
+    setState(() {
+      _getInfo(Constant.userConfigInfo.authtoken).then((value){
+        print(value);
+        Constant.userInfo = UserInfo.fromJson(value);
       });
+      _userAccount = Constant.userInfo.userName;
+      userLevel = Constant.userConfigInfo.userType;
+//        print('用户等级：'+ userLevel.toString());
     });
   }
 
+  /// 注销账号
+  Future<Map<String, dynamic>> _logoffAccount(String token) async{
+    return widget.apiClient.logoffAccount(token);
+  }
+
+  _logoff(String token){
+    return () {
+      setState(() {
+//        _logoffAccount(token).then((value){
+//          if(value['msg'] == '账户注销成功'){
+//
+//          }
+//
+//        });
+        /// 返回根
+        Navigator.of(context).pushAndRemoveUntil(
+            new MaterialPageRoute(builder: (context) => LoginPage()),
+                (route) => route == null);
+        Flushbar(
+          message:  "注销成功！",
+          duration:  Duration(seconds: 3),
+        )..show(context);
+
+
+      });
+    };
+  }
+  /// 切换账号
   Widget _buildChange() {
     return Container(
       height: 50,
@@ -53,18 +85,10 @@ class _PersonalCenterState extends State<PersonalCenter> {
 //        border: new Border.all(width: 1, color: Colors.grey),
       ),
       child: ListTile(
-        leading: Icon(Icons.cached),
-        title: Text(
-          '切换账号',
-          style: _normalFont,
-        ),
-        trailing: Icon(Icons.navigate_next),
-        onTap: () {
-          /// 返回根
-          Navigator.of(context).pushAndRemoveUntil(
-              new MaterialPageRoute(builder: (context) => LoginPage()),
-              (route) => route == null);
-        },
+        leading: Icon(Icons.cached, color: Color.fromRGBO(244, 67, 54, 1)),
+        title: Text('切换账号', style: _normalFont,),
+        trailing: Icon(Icons.navigate_next, color: Color.fromRGBO(33, 150, 243, 1)),
+        onTap: _logoff(Constant.userConfigInfo.authtoken),
       ),
     );
   }
@@ -80,9 +104,9 @@ class _PersonalCenterState extends State<PersonalCenter> {
 //        border: new Border.all(width: 1, color: Colors.grey),
       ),
       child: ListTile(
-        leading: Icon(Icons.info),
+        leading: Icon(Icons.info, color: Color.fromRGBO(33, 150, 243, 1)),
         title: Text('我的实验室', style: _normalFont),
-        trailing: Icon(Icons.navigate_next),
+        trailing: Icon(Icons.navigate_next, color: Color.fromRGBO(33, 150, 243, 1)),
         onTap: () {
           /// 设置跳转到我的实验室界面
           Navigator.of(context).pushAndRemoveUntil(
@@ -111,10 +135,9 @@ class _PersonalCenterState extends State<PersonalCenter> {
 //        border: new Border.all(width: 1, color: Colors.grey),
       ),
       child: ListTile(
-        leading: Icon(Icons.add),
+        leading: Icon(Icons.add, color: Color.fromRGBO(233, 30, 99 ,1)),
         title: Text('新建实验室', style: _normalFont),
-        trailing: Icon(Icons.navigate_next),
-
+        trailing: Icon(Icons.navigate_next, color: Color.fromRGBO(33, 150, 243, 1)),
         /// 设置跳转到新增实验室界面
         onTap: _addExperiment(),
       ),
@@ -132,9 +155,9 @@ class _PersonalCenterState extends State<PersonalCenter> {
 //        border: new Border.all(width: 1, color: Colors.grey),
       ),
       child: ListTile(
-        leading: Icon(Icons.check),
+        leading: Icon(Icons.remove_red_eye, color: Color.fromRGBO(83, 109, 254, 1)),
         title: Text('审核实验室', style: _normalFont),
-        trailing: Icon(Icons.navigate_next),
+        trailing: Icon(Icons.navigate_next, color: Color.fromRGBO(33, 150, 243, 1)),
         onTap: () {
           /// 设置跳转到审核实验室界面
           Navigator.of(context).pushAndRemoveUntil(
@@ -145,49 +168,66 @@ class _PersonalCenterState extends State<PersonalCenter> {
     );
   }
 
+  ///  修改密码
+  Widget _buildUserPwd() {
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 240, 240, 240),
+        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+        //设置四周边框
+//        border: new Border.all(width: 1, color: Colors.grey),
+      ),
+      child: ListTile(
+        leading: Icon(Icons.security, color: Color.fromRGBO(76, 175, 80, 1)),
+        title: Text('修改密码', style: _normalFont),
+        trailing: Icon(Icons.navigate_next, color: Color.fromRGBO(33, 150, 243, 1)),
+        onTap: () {
+          /// 设置跳转到修改密码界面
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => ChangePwdPage()));
+        },
+      ),
+    );
+  }
+
   Widget _buildContent(int userLevel) {
     switch (userLevel) {
-      case 2:
-        return Column(
-          children: <Widget>[
-            _buildMyExperiment(),
-            SizedBox(
-              height: 10,
-            ),
-            _buildChange(),
-          ],
-        );
-        break;
       case 1:
         return Column(
           children: <Widget>[
             _buildMyExperiment(),
-            SizedBox(
-              height: 10,
-            ),
-            _buildAddExperiment(),
-            SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: 10),
+            _buildUserPwd(),
+            SizedBox(height: 10),
             _buildChange(),
           ],
         );
         break;
-      case 3:
+      case 0:
         return Column(
           children: <Widget>[
             _buildMyExperiment(),
-            SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: 10,),
             _buildAddExperiment(),
-            SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: 10),
+            _buildUserPwd(),
+            SizedBox(height: 10,),
+            _buildChange(),
+          ],
+        );
+        break;
+      case 2:
+        return Column(
+          children: <Widget>[
+            _buildMyExperiment(),
+            SizedBox(height: 10,),
+            _buildAddExperiment(),
+            SizedBox(height: 10,),
             _buildCheckExperiment(),
-            SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: 10),
+            _buildUserPwd(),
+            SizedBox(height: 10,),
             _buildChange(),
           ],
         );
@@ -200,7 +240,7 @@ class _PersonalCenterState extends State<PersonalCenter> {
   _getUserInfo() {
     return () {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => UserPage(_userInfo)));
+          MaterialPageRoute(builder: (context) => UserPage(Constant.userInfo)));
     };
   }
 
@@ -214,7 +254,7 @@ class _PersonalCenterState extends State<PersonalCenter> {
         child: Row(
           children: <Widget>[
             ClipOval(
-              child: Image.asset('assets/user-head.jpg',
+              child: Image.network('${Constant.baseUrl + Constant.userInfo.userAvatarUrl}',
                   width: 64, height: 64, fit: BoxFit.cover),
             ),
             SizedBox(width: 15),
@@ -222,21 +262,13 @@ class _PersonalCenterState extends State<PersonalCenter> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    _userAccount,
-
+                  SizedBox(height: 15,),
+                  Text(_userAccount,
                     /// 用户昵称
                     style: _titlrFont,
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    level[userLevel],
-
+                  SizedBox(height: 10,),
+                  Text(level[userLevel],
                     /// 用户等级
                     style: _normalFont,
                   ),
@@ -249,18 +281,31 @@ class _PersonalCenterState extends State<PersonalCenter> {
     );
   }
 
+  Widget buildWidget() => Constant.userInfo == null ?
+      Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(height: 200),
+            Icon(Icons.hourglass_empty, size: 40,),
+            Text('未找到相关信息')
+        ],
+        ),
+      ) : Column(
+            children: <Widget>[
+                _buildInfo(_userAccount, userLevel),
+                SizedBox(height: 60),
+                _buildContent(userLevel),
+            ],
+  );
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         margin: EdgeInsets.only(left: 15, right: 15, top: 40),
-        child: Column(
-          children: <Widget>[
-            _buildInfo(_userAccount, userLevel),
-            SizedBox(height: 60),
-            _buildContent(userLevel),
-          ],
-        ),
+        child: buildWidget(),
       ),
     );
   }

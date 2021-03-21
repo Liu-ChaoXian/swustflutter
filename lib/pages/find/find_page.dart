@@ -1,17 +1,18 @@
 import 'dart:io';
 
+import 'package:swustflutter/config/constant.dart';
 import 'package:swustflutter/model/experiment_info.dart';
 import 'package:swustflutter/pages/detail_info.dart';
 import 'package:swustflutter/pages/find/search_page.dart';
 import 'package:swustflutter/widgets/find_list.dart';
 import 'package:swustflutter/widgets/search_input.dart';
-
+import 'package:swustflutter/client/swust_api_client.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FindPage extends StatefulWidget {
   ///发现界面
-
+  var apiClient = new SwustAPIClient();
   @override
   State<StatefulWidget> createState() => _FindPageState();
 }
@@ -26,7 +27,7 @@ class _FindPageState extends State<FindPage> {
   ///实验室列表
   final _experimentList = [
     ExperimentInfo(
-        experimentName: '软件测试实验室',
+        experimentName: '软件测试实验室软件测试实验室软件测试实验',
         experimentID: 1,
         experimentAddress: '东九A238',
         detailInfo: '软件测试实验是一个很棒的实验室！！！软件测试实验是一个很棒的实验室！！！',
@@ -215,6 +216,7 @@ class _FindPageState extends State<FindPage> {
   void initState() {
     super.initState();
     _exper = _experimentList;
+    widget.apiClient.getExperimentList(Constant.userConfigInfo.authtoken);
   }
 
   ///聚焦搜索框

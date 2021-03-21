@@ -49,12 +49,22 @@ class DetailInfo extends StatelessWidget{
                           children: <Widget>[
                             Card(
                                 color: Color.fromARGB(255, 240, 240, 240),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                                child: Column(
                                   children: <Widget>[
-                                    SizedBox(width: 10,),
-                                    Text('实验室名称：', style: _titleFont),
-                                    Text('${experimentInfo.experimentName}', style: _normalFont),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: <Widget>[
+                                        SizedBox(width: 10,),
+                                        Text('实验室名称：', style: _titleFont),
+                                        Expanded(
+                                          child: Text('${experimentInfo.experimentName}', style: _normalFont),
+                                        )
+                                      ],
+                                    ),
+//                                    Padding(
+//                                      padding: EdgeInsets.only(left: 10, right: 10),
+//                                      child: Text('${experimentInfo.experimentName}', style: _normalFont),
+//                                    )
                                   ],
                                 )
                             ),
@@ -71,12 +81,18 @@ class DetailInfo extends StatelessWidget{
                             ),
                             Card(
                                 color: Color.fromARGB(255, 240, 240, 240),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                                child: Column(
                                   children: <Widget>[
-                                    SizedBox(width: 10,),
-                                    Text('实验室地址：', style: _titleFont),
-                                    Text('${experimentInfo.experimentAddress}', style: _normalFont),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: <Widget>[
+                                        SizedBox(width: 10,),
+                                        Text('实验室地址：', style: _titleFont),
+                                        Expanded(
+                                            child: Text('${experimentInfo.experimentAddress}', style: _normalFont),
+                                        ),
+                                      ],
+                                    )
                                   ],
                                 )
                             ),

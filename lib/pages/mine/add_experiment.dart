@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:swustflutter/client/swust_api_client.dart';
+import 'package:swustflutter/config/constant.dart';
+import 'package:flushbar/flushbar.dart';
+import 'package:swustflutter/pages/mine/personal_center.dart';
 
 class AddExperiment extends StatefulWidget {
   @override
@@ -11,8 +14,8 @@ class _AddExperimentState extends State<AddExperiment> {
   String experimentName;
   ///实验室地址
   String experimentAddress;
-  ///实验室负责人
-  String director;
+  ///实验室联系方式
+  String labContact;
   ///实验室简介
   String detailInfo;
   ///图片信息  可以保存多张图片
@@ -25,8 +28,7 @@ class _AddExperimentState extends State<AddExperiment> {
   final _normalFont = const TextStyle(fontSize: 18.0);
   final _borderRadius = BorderRadius.circular(6);
   void _checkUserInput() {
-
-    if (experimentName.isNotEmpty && experimentAddress.isNotEmpty && director.isNotEmpty
+    if (experimentName.isNotEmpty && experimentAddress.isNotEmpty && labContact.isNotEmpty
       && detailInfo.isNotEmpty && achievement.isNotEmpty && time.isNotEmpty) {
       if (_isEnableLogin) return;
     } else {
@@ -37,12 +39,37 @@ class _AddExperimentState extends State<AddExperiment> {
       _isEnableLogin = !_isEnableLogin;
     });
   }
-  _getLoginButtonPressed() {
+
+  Map<String, dynamic> paras = {};
+  SwustAPIClient apiClient = new SwustAPIClient();
+
+
+  Future<Map<String, dynamic>> _createExperiment(Map paras, String token) async{
+    return await apiClient.createExperiment(paras, token);
+  }
+
+  _createButtonPressed(String token) {
     if (!_isEnableLogin) return null;
 
     return (){
-//      Navigator.push(
-//          context, MaterialPageRoute(builder: (context) => MyHomePage()));
+      setState(() {
+        paras['labName'] = experimentName;
+        paras['applicantId'] = Constant.userInfo.userAccount;
+        paras['labIntro'] = detailInfo;
+        paras['labContact'] = labContact;
+        paras['labAddr'] = experimentAddress;
+        paras['labHonor'] = achievement;
+        paras['labRecruitTime'] = time;
+        _createExperiment(paras, token).then((value){
+          Navigator.of(context).pushAndRemoveUntil(
+              new MaterialPageRoute(builder: (context) => PersonalCenter()),
+                  (route) => route == null);
+          Flushbar(
+            message:  "${value['msg']}",
+            duration:  Duration(seconds: 3),
+          )..show(context);
+        });
+      });
     };
   }
 
@@ -82,13 +109,13 @@ class _AddExperimentState extends State<AddExperiment> {
               SizedBox(height: 10,),
               TextField(
                 onChanged: (text) {
-                  director = text;
+                  labContact = text;
                   _checkUserInput();
                 },
                 style: _normalFont,
                 decoration: InputDecoration(
-                  hintText: '请输入实验室老师',
-                  labelText: '实验室老师',
+                  hintText: '请输入联系方式',
+                  labelText: '实验室联系方式',
                   filled: true,
                   fillColor: Color.fromARGB(255, 240, 240, 240),
                   contentPadding: EdgeInsets.only(left: 8),
@@ -177,7 +204,7 @@ class _AddExperimentState extends State<AddExperiment> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  onPressed: _getLoginButtonPressed()
+                  onPressed: _createButtonPressed(Constant.userConfigInfo.authtoken)
                 ),
               )
             ],

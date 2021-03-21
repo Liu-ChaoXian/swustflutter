@@ -5,6 +5,10 @@ import 'package:swustflutter/pages/login/forget_password.dart';
 import 'package:swustflutter/pages/login/register_account.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import '../../config/constant.dart';
+import '../../client/swust_api_client.dart';
+import 'package:flushbar/flushbar.dart';
+import '../../config/constant.dart';
+import '../../config/user_config.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -20,7 +24,9 @@ class _LoginPageState extends State<LoginPage> {
       const TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600);
   final _normalFont = const TextStyle(fontSize: 18.0);
   final _borderRadius = BorderRadius.circular(6);
-
+  SwustAPIClient apiClient = new SwustAPIClient();
+  Map paras = {};
+  Map result = {};
   String _accountText = '';
   String _pwdText = '';
   bool _isEnableLogin = false;
@@ -46,6 +52,10 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
+  Future<Map<String,dynamic>> _loginAccount(Map paras) async{
+    return await apiClient.loginAccount(paras);
+  }
+
   _getLoginButtonPressed() {
     if (!_isEnableLogin) return null;
 
@@ -54,12 +64,31 @@ class _LoginPageState extends State<LoginPage> {
       prefs.setString(Constant.userAccount, _accountText);
       prefs.setString(Constant.userPassword, _pwdText);
 
-      /// 设置跳转到主页
-      Navigator.of(context).pushAndRemoveUntil(
-          new MaterialPageRoute(builder: (context) => MyHomePage()),
-          (route) => route == null);
-//      Navigator.push(
-//          context, MaterialPageRoute(builder: (context) => MyHomePage()));
+      setState(() {
+        paras['userAccount'] = _accountText;
+        paras['password'] = _pwdText;
+        _loginAccount(paras).then((msg){
+          result = msg;
+          if(msg['msg'] == '成功') {
+            /// 设置跳转到主页
+            Navigator.of(context).pushAndRemoveUntil(
+                new MaterialPageRoute(builder: (context) => MyHomePage()),
+                    (route) => route == null);
+//            Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
+            Constant.userConfigInfo = UserConfig.fromJson(msg);
+          }
+          Flushbar(
+            message:  "登录${msg['msg']}",
+            duration:  Duration(seconds: 3),
+          )..show(context);
+        });
+      });
+//      /// 设置跳转到主页
+//      Navigator.of(context).pushAndRemoveUntil(
+//          new MaterialPageRoute(builder: (context) => MyHomePage()),
+//              (route) => route == null);
+
+
     };
   }
 
@@ -183,8 +212,8 @@ class _LoginPageState extends State<LoginPage> {
             onPressed: () {
               Navigator.push(context,
                   new MaterialPageRoute(builder: (BuildContext context) {
-                return new ForgetPassWord();
-              }));
+                    return new ForgetPassWord();
+                  }));
             },
           )
         ],

@@ -1,3 +1,6 @@
+import 'package:swustflutter/config/user_config.dart';
+import 'package:swustflutter/model/user_info.dart';
+
 class Constant {
   static const String userAccount = 'UserAccount';
   static const String userPassword = 'UserPassword';
@@ -11,4 +14,8 @@ class Constant {
   /// 使用getExternalStorageDirectory 返回如：
   /// /storage/emulated/0/Android/data/cn.edu.swust.bddisk/files
   static const String defaultExternalStorageDirectoryPrefix = '/Android/data/';
+
+  static UserConfig userConfigInfo;
+  static UserInfo userInfo = null;
+  static const baseUrl = 'http://81.70.222.171:80';
 }

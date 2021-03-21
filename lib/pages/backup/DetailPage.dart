@@ -45,7 +45,7 @@ class DetailPage extends StatelessWidget {
               child: ListTile(
                 trailing: Text("地址"),
                 leading: Icon(
-                  Icons.home_work_outlined,
+                  Icons.home,
                   color: Colors.orange,
                 ),
                 title: Text(

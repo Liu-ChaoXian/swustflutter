@@ -30,6 +30,7 @@ dependencies:
   flip_card: ^0.2.1
   permission_handler: ^4.4.0
   flutter_swiper: ^1.1.6
+  dio: 3.0.10
 
 dev_dependencies:
   flutter_test:

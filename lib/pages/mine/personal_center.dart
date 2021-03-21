@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swustflutter/pages/login/forget_password.dart';
 import 'package:swustflutter/pages/login/login_page.dart';
 import 'package:swustflutter/pages/mine/change_pwd.dart';
+import 'package:swustflutter/pages/mine/my_experiment.dart';
 import 'user_page.dart';
 import 'add_experiment.dart';
 import '../../model/user_info.dart';
@@ -19,7 +20,8 @@ class PersonalCenter extends StatefulWidget {
 
 class _PersonalCenterState extends State<PersonalCenter> {
   final _normalFont = const TextStyle(fontSize: 18.0);
-  final _titlrFont = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400);
+  final _titlrFont =
+      const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400);
   final List<String> level = ['普通用户', '实验室负责人', '系统管理员'];
 
   String _userAccount = 'user1';
@@ -28,8 +30,8 @@ class _PersonalCenterState extends State<PersonalCenter> {
   SwustAPIClient apiClient = new SwustAPIClient();
 
   /// 获取用户个人信息
-  _getInfo(String token) async{
-    Map<String, dynamic> value =  await apiClient.getUserInfo(token);
+  _getInfo(String token) async {
+    Map<String, dynamic> value = await apiClient.getUserInfo(token);
     print(value['userName']);
     return value;
   }
@@ -37,7 +39,7 @@ class _PersonalCenterState extends State<PersonalCenter> {
   @override
   void initState() {
     setState(() {
-      _getInfo(Constant.userConfigInfo.authtoken).then((value){
+      _getInfo(Constant.userConfigInfo.authtoken).then((value) {
         print(value);
         Constant.userInfo = UserInfo.fromJson(value);
       });
@@ -48,11 +50,11 @@ class _PersonalCenterState extends State<PersonalCenter> {
   }
 
   /// 注销账号
-  Future<Map<String, dynamic>> _logoffAccount(String token) async{
+  Future<Map<String, dynamic>> _logoffAccount(String token) async {
     return widget.apiClient.logoffAccount(token);
   }
 
-  _logoff(String token){
+  _logoff(String token) {
     return () {
       setState(() {
 //        _logoffAccount(token).then((value){
@@ -64,16 +66,15 @@ class _PersonalCenterState extends State<PersonalCenter> {
         /// 返回根
         Navigator.of(context).pushAndRemoveUntil(
             new MaterialPageRoute(builder: (context) => LoginPage()),
-                (route) => route == null);
+            (route) => route == null);
         Flushbar(
-          message:  "注销成功！",
-          duration:  Duration(seconds: 3),
+          message: "注销成功！",
+          duration: Duration(seconds: 3),
         )..show(context);
-
-
       });
     };
   }
+
   /// 切换账号
   Widget _buildChange() {
     return Container(
@@ -86,8 +87,12 @@ class _PersonalCenterState extends State<PersonalCenter> {
       ),
       child: ListTile(
         leading: Icon(Icons.cached, color: Color.fromRGBO(244, 67, 54, 1)),
-        title: Text('切换账号', style: _normalFont,),
-        trailing: Icon(Icons.navigate_next, color: Color.fromRGBO(33, 150, 243, 1)),
+        title: Text(
+          '切换账号',
+          style: _normalFont,
+        ),
+        trailing:
+            Icon(Icons.navigate_next, color: Color.fromRGBO(33, 150, 243, 1)),
         onTap: _logoff(Constant.userConfigInfo.authtoken),
       ),
     );
@@ -106,11 +111,12 @@ class _PersonalCenterState extends State<PersonalCenter> {
       child: ListTile(
         leading: Icon(Icons.info, color: Color.fromRGBO(33, 150, 243, 1)),
         title: Text('我的实验室', style: _normalFont),
-        trailing: Icon(Icons.navigate_next, color: Color.fromRGBO(33, 150, 243, 1)),
+        trailing:
+            Icon(Icons.navigate_next, color: Color.fromRGBO(33, 150, 243, 1)),
         onTap: () {
           /// 设置跳转到我的实验室界面
           Navigator.of(context).pushAndRemoveUntil(
-              new MaterialPageRoute(builder: (context) => LoginPage()),
+              new MaterialPageRoute(builder: (context) => MyExperiment()),
               (route) => route == null);
         },
       ),
@@ -135,9 +141,11 @@ class _PersonalCenterState extends State<PersonalCenter> {
 //        border: new Border.all(width: 1, color: Colors.grey),
       ),
       child: ListTile(
-        leading: Icon(Icons.add, color: Color.fromRGBO(233, 30, 99 ,1)),
+        leading: Icon(Icons.add, color: Color.fromRGBO(233, 30, 99, 1)),
         title: Text('新建实验室', style: _normalFont),
-        trailing: Icon(Icons.navigate_next, color: Color.fromRGBO(33, 150, 243, 1)),
+        trailing:
+            Icon(Icons.navigate_next, color: Color.fromRGBO(33, 150, 243, 1)),
+
         /// 设置跳转到新增实验室界面
         onTap: _addExperiment(),
       ),
@@ -155,9 +163,11 @@ class _PersonalCenterState extends State<PersonalCenter> {
 //        border: new Border.all(width: 1, color: Colors.grey),
       ),
       child: ListTile(
-        leading: Icon(Icons.remove_red_eye, color: Color.fromRGBO(83, 109, 254, 1)),
+        leading:
+            Icon(Icons.remove_red_eye, color: Color.fromRGBO(83, 109, 254, 1)),
         title: Text('审核实验室', style: _normalFont),
-        trailing: Icon(Icons.navigate_next, color: Color.fromRGBO(33, 150, 243, 1)),
+        trailing:
+            Icon(Icons.navigate_next, color: Color.fromRGBO(33, 150, 243, 1)),
         onTap: () {
           /// 设置跳转到审核实验室界面
           Navigator.of(context).pushAndRemoveUntil(
@@ -181,11 +191,12 @@ class _PersonalCenterState extends State<PersonalCenter> {
       child: ListTile(
         leading: Icon(Icons.security, color: Color.fromRGBO(76, 175, 80, 1)),
         title: Text('修改密码', style: _normalFont),
-        trailing: Icon(Icons.navigate_next, color: Color.fromRGBO(33, 150, 243, 1)),
+        trailing:
+            Icon(Icons.navigate_next, color: Color.fromRGBO(33, 150, 243, 1)),
         onTap: () {
           /// 设置跳转到修改密码界面
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ChangePwdPage()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => ChangePwdPage()));
         },
       ),
     );
@@ -208,11 +219,15 @@ class _PersonalCenterState extends State<PersonalCenter> {
         return Column(
           children: <Widget>[
             _buildMyExperiment(),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             _buildAddExperiment(),
             SizedBox(height: 10),
             _buildUserPwd(),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             _buildChange(),
           ],
         );
@@ -221,13 +236,19 @@ class _PersonalCenterState extends State<PersonalCenter> {
         return Column(
           children: <Widget>[
             _buildMyExperiment(),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             _buildAddExperiment(),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             _buildCheckExperiment(),
             SizedBox(height: 10),
             _buildUserPwd(),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             _buildChange(),
           ],
         );
@@ -254,21 +275,32 @@ class _PersonalCenterState extends State<PersonalCenter> {
         child: Row(
           children: <Widget>[
             ClipOval(
-              child: Image.network('${Constant.baseUrl + Constant.userInfo.userAvatarUrl}',
-                  width: 64, height: 64, fit: BoxFit.cover),
+              child: Image.network(
+                  '${Constant.baseUrl + Constant.userInfo.userAvatarUrl}',
+                  width: 64,
+                  height: 64,
+                  fit: BoxFit.cover),
             ),
             SizedBox(width: 15),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  SizedBox(height: 15,),
-                  Text(_userAccount,
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Text(
+                    _userAccount,
+
                     /// 用户昵称
                     style: _titlrFont,
                   ),
-                  SizedBox(height: 10,),
-                  Text(level[userLevel],
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    level[userLevel],
+
                     /// 用户等级
                     style: _normalFont,
                   ),
@@ -281,24 +313,27 @@ class _PersonalCenterState extends State<PersonalCenter> {
     );
   }
 
-  Widget buildWidget() => Constant.userInfo == null ?
-      Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(height: 200),
-            Icon(Icons.hourglass_empty, size: 40,),
-            Text('未找到相关信息')
-        ],
-        ),
-      ) : Column(
+  Widget buildWidget() => Constant.userInfo == null
+      ? Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-                _buildInfo(_userAccount, userLevel),
-                SizedBox(height: 60),
-                _buildContent(userLevel),
+              SizedBox(height: 200),
+              Icon(
+                Icons.hourglass_empty,
+                size: 40,
+              ),
+              Text('未找到相关信息')
             ],
-  );
-
+          ),
+        )
+      : Column(
+          children: <Widget>[
+            _buildInfo(_userAccount, userLevel),
+            SizedBox(height: 60),
+            _buildContent(userLevel),
+          ],
+        );
 
   @override
   Widget build(BuildContext context) {

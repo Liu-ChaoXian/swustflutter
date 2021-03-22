@@ -52,22 +52,19 @@ class _AddExperimentState extends State<AddExperiment> {
     if (!_isEnableLogin) return null;
 
     return (){
-      setState(() {
-        paras['labName'] = experimentName;
-        paras['applicantId'] = Constant.userInfo.userAccount;
-        paras['labIntro'] = detailInfo;
-        paras['labContact'] = labContact;
-        paras['labAddr'] = experimentAddress;
-        paras['labHonor'] = achievement;
-        paras['labRecruitTime'] = time;
-        _createExperiment(paras, token).then((value){
+      paras['labName'] = experimentName;
+      paras['applicantId'] = Constant.userInfo.userAccount;
+      paras['labIntro'] = detailInfo;
+      paras['labContact'] = labContact;
+      paras['labAddr'] = experimentAddress;
+      paras['labHonor'] = achievement;
+      paras['labRecruitTime'] = time;
+      _createExperiment(paras, token).then((value){
+        setState(() {
           Navigator.of(context).pushAndRemoveUntil(
               new MaterialPageRoute(builder: (context) => PersonalCenter()),
                   (route) => route == null);
-          Flushbar(
-            message:  "${value['msg']}",
-            duration:  Duration(seconds: 3),
-          )..show(context);
+          Constant.useFlush(value['msg'], context);
         });
       });
     };

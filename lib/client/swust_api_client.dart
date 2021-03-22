@@ -139,6 +139,79 @@ class SwustAPIClient {
     }
   }
 
+  /// 获取所有创建待审核实验室
+  Future<List<dynamic>> getexamineList(String token) async {
+    Map<String, dynamic> header = {
+      "auth-token": token,
+      'Content-Type': 'application/json'
+    };
+    Options options = Options(headers: header);
+    var apiUrl = baseUrl + "/lab/examineList";
+    try{
+      Response response = await Dio().get(apiUrl, options: options);
+      print('获取所有创建待审核实验室：${response.data}');
+      /// 获取到的是Map类型
+      return response.data['labs'];
+    }on DioError catch(e){  /// 异常捕获
+      print('获取所有创建待审核实验室：' + e.response.data);
+      return e.response.data;
+    }
+  }
 
-//  getDetail
+  /// 通过审核
+  Future<dynamic> judgePass(Map paras, String token) async{
+    Map<String, dynamic> header = {
+      "auth-token": token,
+      'Content-Type': 'application/json'
+    };
+    Options options = Options(headers: header);
+    var apiUrl = baseUrl + "/lab/examine/lab";
+    try{
+      print(paras);
+      Response response = await Dio().post(apiUrl, data: paras, options: options);
+      print('通过审核：${response.data}');
+      /// 获取到的是Map类型
+      return response.data['msg'];
+    }on DioError catch(e){  /// 异常捕获
+      print('通过审核：' + e.response.data);
+      return e.response.data;
+    }
+  }
+
+  /// 审核未通过
+  Future<dynamic> judgeFail(Map paras, String token) async{
+    Map<String, dynamic> header = {
+      "auth-token": token,
+      'Content-Type': 'application/json'
+    };
+    Options options = Options(headers: header);
+    var apiUrl = baseUrl + "/lab/examine/lab";
+    try{
+      Response response = await Dio().post(apiUrl, data: paras, options: options);
+      print('不通过审核：${response.data}');
+      /// 获取到的是Map类型
+      return response.data['msg'];
+    }on DioError catch(e){  /// 异常捕获
+      print('不通过审核：' + e.response.data);
+      return e.response.data;
+    }
+  }
+  /// 获取默认展示列表
+  Future<List<dynamic>> getDefaultList(String token) async {
+    Map<String, dynamic> header = {
+      "auth-token": token,
+      'Content-Type': 'application/json'
+    };
+    Options options = Options(headers: header);
+    var apiUrl = baseUrl + "/lab/default_list";
+    try{
+      Response response = await Dio().get(apiUrl, options: options);
+      print('获取所有创建待审核实验室：${response.data}');
+      /// 获取到的是Map类型
+      return response.data['labs'];
+    }on DioError catch(e){  /// 异常捕获
+      print('获取所有创建待审核实验室：' + e.response.data);
+      return e.response.data;
+    }
+  }
 }

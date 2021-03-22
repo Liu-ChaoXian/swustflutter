@@ -26,6 +26,18 @@ class ExperimentInfo{
   ///实验室招新时间
   String time;
 
+  /// 申请人ID
+  String applicantId;
+
+  /// 联系方式
+  String labContact;
+
+  /// 实验室ID
+  String labId;
+
+  ///实验室头像
+  String labAvatarUrl;
+
   ExperimentInfo({
     this.experimentName,
     this.experimentID,
@@ -39,5 +51,23 @@ class ExperimentInfo{
 
   String getName(){
     return this.experimentName;
+  }
+
+  ExperimentInfo.fromJson(Map<String, dynamic> json){
+    this.applicantId = json['applicantId'];
+    this.director = json['applicantName'];
+    this.labContact = json['labContact'];
+    this.detailInfo = json['labIntro'];
+    this.experimentName = json['labName'];
+    this.labId = json['labId'];
+    this.achievement = json['labHonor'];
+    this.experimentAddress = json['labAddr'];
+  }
+  ExperimentInfo.fromJsonDefault(Map<String, dynamic> json){
+    this.labAvatarUrl = json['labAvatarUrl'];
+    this.director = json['labManagerName'];
+    this.labContact = json['labContact'];
+    this.experimentName = json['labName'];
+    this.labId = json['labId'];
   }
 }

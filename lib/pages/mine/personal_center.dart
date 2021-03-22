@@ -22,7 +22,6 @@ class PersonalCenter extends StatefulWidget {
 enum GetState { loading, loaded, fail }
 
 class _PersonalCenterState extends State<PersonalCenter> {
-
   GetState _state = GetState.loading;
   final _normalFont = const TextStyle(fontSize: 18.0);
   final _titlrFont =
@@ -48,14 +47,13 @@ class _PersonalCenterState extends State<PersonalCenter> {
       setState(() {
 //        print(value);
         Constant.userInfo = UserInfo.fromJson(value);
-        avatarUrl = Constant.baseUrl +  Constant.userInfo.userAvatarUrl;
+        avatarUrl = Constant.baseUrl + Constant.userInfo.userAvatarUrl;
         _userAccount = Constant.userInfo.userName;
         _state = GetState.loaded;
         userLevel = Constant.userConfigInfo.userType;
 //        print('用户头像' + avatarUrl);
 //        print('用户等级：'+ userLevel.toString());
       });
-
     });
   }
 
@@ -167,8 +165,8 @@ class _PersonalCenterState extends State<PersonalCenter> {
             Icon(Icons.navigate_next, color: Color.fromRGBO(33, 150, 243, 1)),
         onTap: () {
           /// 设置跳转到审核实验室界面
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => JudgeExperiment()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => JudgeExperiment()));
         },
       ),
     );
@@ -240,7 +238,9 @@ class _PersonalCenterState extends State<PersonalCenter> {
             _buildCheckExperiment(),
             SizedBox(height: 10),
             _buildUserPwd(),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             _buildChange(),
           ],
         );
@@ -271,11 +271,8 @@ class _PersonalCenterState extends State<PersonalCenter> {
         child: Row(
           children: <Widget>[
             ClipOval(
-              child: Image.network(
-                  '$avatarUrl',
-                  width: 64,
-                  height: 64,
-                  fit: BoxFit.cover),
+              child: Image.network('$avatarUrl',
+                  width: 64, height: 64, fit: BoxFit.cover),
             ),
             SizedBox(width: 15),
             Expanded(
@@ -285,9 +282,17 @@ class _PersonalCenterState extends State<PersonalCenter> {
                   SizedBox(
                     height: 15,
                   ),
-                  Text(_userAccount, style: _titlrFont,),
-                  SizedBox(height: 10,),
-                  Text(level[userLevel], style: _normalFont,),
+                  Text(
+                    _userAccount,
+                    style: _titlrFont,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    level[userLevel],
+                    style: _normalFont,
+                  ),
                 ],
               ),
             ),
@@ -297,27 +302,29 @@ class _PersonalCenterState extends State<PersonalCenter> {
     );
   }
 
-  Widget buildWidget(){
-    switch(_state){
+  Widget buildWidget() {
+    switch (_state) {
       case GetState.loading:
-            return Center(
-                  child: Column(
-                    children: [
-                      CircularProgressIndicator(strokeWidth: 4.0,),
-                      Text('正在加载')
-                    ],
-                  ),
-            );
+        return Center(
+          child: Column(
+            children: [
+              CircularProgressIndicator(
+                strokeWidth: 4.0,
+              ),
+              Text('正在加载')
+            ],
+          ),
+        );
       case GetState.loaded:
-            return Column(
-                children: <Widget>[
-                _buildInfo(_userAccount, userLevel),
-                SizedBox(height: 60),
-                _buildContent(userLevel),
-                ],
-            );
-       default:
-         break;
+        return Column(
+          children: <Widget>[
+            _buildInfo(_userAccount, userLevel),
+            SizedBox(height: 60),
+            _buildContent(userLevel),
+          ],
+        );
+      default:
+        break;
     }
   }
 
@@ -325,9 +332,8 @@ class _PersonalCenterState extends State<PersonalCenter> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        margin: EdgeInsets.only(left: 15, right: 15, top: 40),
-        child: buildWidget(),
-      ),
+          margin: EdgeInsets.only(left: 15, right: 15, top: 40),
+          child: buildWidget()),
     );
   }
 }

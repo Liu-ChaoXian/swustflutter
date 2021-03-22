@@ -1,3 +1,4 @@
+import 'package:swustflutter/common/SwustApi.dart';
 import 'package:swustflutter/main.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -75,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                 (route) => route == null);
             //            Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
             Constant.userConfigInfo = UserConfig.fromJson(msg);
+            SwustApi.init();
           }
         });
 

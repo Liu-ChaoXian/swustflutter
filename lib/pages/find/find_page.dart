@@ -28,16 +28,15 @@ class _FindPageState extends State<FindPage> {
   final _experimentList = [];
 
   _getList() async {
-    return await widget.apiClient.getExperimentList(Constant.userConfigInfo.authtoken);
+    return await widget.apiClient
+        .getExperimentList(Constant.userConfigInfo.authtoken);
   }
 
   @override
   void initState() {
     super.initState();
-    _exper = _experimentList;
-    _getList().then((value){
-
-    });
+    // _exper = _experimentList;
+    _getList().then((value) {});
   }
 
   ///聚焦搜索框

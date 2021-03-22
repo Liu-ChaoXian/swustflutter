@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swustflutter/pages/login/forget_password.dart';
 import 'package:swustflutter/pages/login/login_page.dart';
 import 'package:swustflutter/pages/mine/change_pwd.dart';
+import 'package:swustflutter/pages/mine/judge_experiment.dart';
 import 'package:swustflutter/pages/mine/my_experiment.dart';
 import 'user_page.dart';
 import 'add_experiment.dart';
@@ -18,7 +19,11 @@ class PersonalCenter extends StatefulWidget {
   State<StatefulWidget> createState() => _PersonalCenterState();
 }
 
+enum GetState { loading, loaded, fail }
+
 class _PersonalCenterState extends State<PersonalCenter> {
+
+  GetState _state = GetState.loading;
   final _normalFont = const TextStyle(fontSize: 18.0);
   final _titlrFont =
       const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400);
@@ -26,7 +31,7 @@ class _PersonalCenterState extends State<PersonalCenter> {
 
   String _userAccount = 'user1';
   int userLevel = 1;
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  String avatarUrl = 'assets/user-head.jpg';
   SwustAPIClient apiClient = new SwustAPIClient();
 
   /// 获取用户个人信息
@@ -38,14 +43,19 @@ class _PersonalCenterState extends State<PersonalCenter> {
 
   @override
   void initState() {
-    setState(() {
-      _getInfo(Constant.userConfigInfo.authtoken).then((value) {
-        print(value);
+    super.initState();
+    _getInfo(Constant.userConfigInfo.authtoken).then((value) {
+      setState(() {
+//        print(value);
         Constant.userInfo = UserInfo.fromJson(value);
-      });
-      _userAccount = Constant.userInfo.userName;
-      userLevel = Constant.userConfigInfo.userType;
+        avatarUrl = Constant.baseUrl +  Constant.userInfo.userAvatarUrl;
+        _userAccount = Constant.userInfo.userName;
+        _state = GetState.loaded;
+        userLevel = Constant.userConfigInfo.userType;
+//        print('用户头像' + avatarUrl);
 //        print('用户等级：'+ userLevel.toString());
+      });
+
     });
   }
 
@@ -61,16 +71,12 @@ class _PersonalCenterState extends State<PersonalCenter> {
 //          if(value['msg'] == '账户注销成功'){
 //
 //          }
-//
 //        });
         /// 返回根
         Navigator.of(context).pushAndRemoveUntil(
             new MaterialPageRoute(builder: (context) => LoginPage()),
             (route) => route == null);
-        Flushbar(
-          message: "注销成功！",
-          duration: Duration(seconds: 3),
-        )..show(context);
+        Constant.useFlush('注销成功！', context);
       });
     };
   }
@@ -82,8 +88,6 @@ class _PersonalCenterState extends State<PersonalCenter> {
       decoration: BoxDecoration(
         color: Color.fromARGB(255, 240, 240, 240),
         borderRadius: BorderRadius.all(Radius.circular(15.0)),
-        //设置四周边框
-//        border: new Border.all(width: 1, color: Colors.grey),
       ),
       child: ListTile(
         leading: Icon(Icons.cached, color: Color.fromRGBO(244, 67, 54, 1)),
@@ -105,8 +109,6 @@ class _PersonalCenterState extends State<PersonalCenter> {
       decoration: BoxDecoration(
         color: Color.fromARGB(255, 240, 240, 240),
         borderRadius: BorderRadius.all(Radius.circular(15.0)),
-        //设置四周边框
-//        border: new Border.all(width: 1, color: Colors.grey),
       ),
       child: ListTile(
         leading: Icon(Icons.info, color: Color.fromRGBO(33, 150, 243, 1)),
@@ -115,9 +117,8 @@ class _PersonalCenterState extends State<PersonalCenter> {
             Icon(Icons.navigate_next, color: Color.fromRGBO(33, 150, 243, 1)),
         onTap: () {
           /// 设置跳转到我的实验室界面
-          Navigator.of(context).pushAndRemoveUntil(
-              new MaterialPageRoute(builder: (context) => MyExperiment()),
-              (route) => route == null);
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => MyExperiment()));
         },
       ),
     );
@@ -137,8 +138,6 @@ class _PersonalCenterState extends State<PersonalCenter> {
       decoration: BoxDecoration(
         color: Color.fromARGB(255, 240, 240, 240),
         borderRadius: BorderRadius.all(Radius.circular(15.0)),
-        //设置四周边框
-//        border: new Border.all(width: 1, color: Colors.grey),
       ),
       child: ListTile(
         leading: Icon(Icons.add, color: Color.fromRGBO(233, 30, 99, 1)),
@@ -159,8 +158,6 @@ class _PersonalCenterState extends State<PersonalCenter> {
       decoration: BoxDecoration(
         color: Color.fromARGB(255, 240, 240, 240),
         borderRadius: BorderRadius.all(Radius.circular(15.0)),
-        //设置四周边框
-//        border: new Border.all(width: 1, color: Colors.grey),
       ),
       child: ListTile(
         leading:
@@ -170,9 +167,8 @@ class _PersonalCenterState extends State<PersonalCenter> {
             Icon(Icons.navigate_next, color: Color.fromRGBO(33, 150, 243, 1)),
         onTap: () {
           /// 设置跳转到审核实验室界面
-          Navigator.of(context).pushAndRemoveUntil(
-              new MaterialPageRoute(builder: (context) => LoginPage()),
-              (route) => route == null);
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => JudgeExperiment()));
         },
       ),
     );
@@ -185,8 +181,6 @@ class _PersonalCenterState extends State<PersonalCenter> {
       decoration: BoxDecoration(
         color: Color.fromARGB(255, 240, 240, 240),
         borderRadius: BorderRadius.all(Radius.circular(15.0)),
-        //设置四周边框
-//        border: new Border.all(width: 1, color: Colors.grey),
       ),
       child: ListTile(
         leading: Icon(Icons.security, color: Color.fromRGBO(76, 175, 80, 1)),
@@ -246,9 +240,7 @@ class _PersonalCenterState extends State<PersonalCenter> {
             _buildCheckExperiment(),
             SizedBox(height: 10),
             _buildUserPwd(),
-            SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: 10,),
             _buildChange(),
           ],
         );
@@ -258,6 +250,7 @@ class _PersonalCenterState extends State<PersonalCenter> {
     }
   }
 
+  /// 跳转到个人详细信息界面
   _getUserInfo() {
     return () {
       Navigator.push(context,
@@ -270,13 +263,16 @@ class _PersonalCenterState extends State<PersonalCenter> {
       onTap: _getUserInfo(),
       child: Container(
         height: 100,
-        color: Color.fromARGB(255, 240, 240, 240),
         padding: EdgeInsets.only(left: 20),
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 240, 240, 240),
+          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+        ),
         child: Row(
           children: <Widget>[
             ClipOval(
               child: Image.network(
-                  '${Constant.baseUrl + Constant.userInfo.userAvatarUrl}',
+                  '$avatarUrl',
                   width: 64,
                   height: 64,
                   fit: BoxFit.cover),
@@ -289,21 +285,9 @@ class _PersonalCenterState extends State<PersonalCenter> {
                   SizedBox(
                     height: 15,
                   ),
-                  Text(
-                    _userAccount,
-
-                    /// 用户昵称
-                    style: _titlrFont,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    level[userLevel],
-
-                    /// 用户等级
-                    style: _normalFont,
-                  ),
+                  Text(_userAccount, style: _titlrFont,),
+                  SizedBox(height: 10,),
+                  Text(level[userLevel], style: _normalFont,),
                 ],
               ),
             ),
@@ -313,27 +297,29 @@ class _PersonalCenterState extends State<PersonalCenter> {
     );
   }
 
-  Widget buildWidget() => Constant.userInfo == null
-      ? Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(height: 200),
-              Icon(
-                Icons.hourglass_empty,
-                size: 40,
-              ),
-              Text('未找到相关信息')
-            ],
-          ),
-        )
-      : Column(
-          children: <Widget>[
-            _buildInfo(_userAccount, userLevel),
-            SizedBox(height: 60),
-            _buildContent(userLevel),
-          ],
-        );
+  Widget buildWidget(){
+    switch(_state){
+      case GetState.loading:
+            return Center(
+                  child: Column(
+                    children: [
+                      CircularProgressIndicator(strokeWidth: 4.0,),
+                      Text('正在加载')
+                    ],
+                  ),
+            );
+      case GetState.loaded:
+            return Column(
+                children: <Widget>[
+                _buildInfo(_userAccount, userLevel),
+                SizedBox(height: 60),
+                _buildContent(userLevel),
+                ],
+            );
+       default:
+         break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

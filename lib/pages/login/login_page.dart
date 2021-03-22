@@ -1,4 +1,3 @@
-import 'package:swustflutter/common/SwustApi.dart';
 import 'package:swustflutter/main.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -64,26 +63,23 @@ class _LoginPageState extends State<LoginPage> {
       final SharedPreferences prefs = await _prefs;
       prefs.setString(Constant.userAccount, _accountText);
       prefs.setString(Constant.userPassword, _pwdText);
-
-      setState(() {
-        paras['userAccount'] = _accountText;
-        paras['password'] = _pwdText;
-        _loginAccount(paras).then((msg) {
-          result = msg;
+      paras['userAccount'] = _accountText;
+      paras['password'] = _pwdText;
+      _loginAccount(paras).then((msg) {
+//          result = msg;
+        setState(() {
           if (msg['msg'] == '成功') {
             /// 设置跳转到主页
             Navigator.of(context).pushAndRemoveUntil(
                 new MaterialPageRoute(builder: (context) => MyHomePage()),
                 (route) => route == null);
-//            Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
+            //            Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
             Constant.userConfigInfo = UserConfig.fromJson(msg);
-            SwustApi.init();
           }
-          Flushbar(
-            message: "登录${msg['msg']}",
-            duration: Duration(seconds: 3),
-          )..show(context);
         });
+
+        /// 调用flush函数
+        Constant.useFlush('登录' + msg['msg'], context);
       });
 //      /// 设置跳转到主页
 //      Navigator.of(context).pushAndRemoveUntil(
@@ -107,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
   List<String> picture = [
     'assets/image1.jpg',
     'assets/image2.jpg',
-    'assets/image3.gif'
+    'assets/image3.gif',
   ];
   Widget _buildTopWidget() {
     return Container(

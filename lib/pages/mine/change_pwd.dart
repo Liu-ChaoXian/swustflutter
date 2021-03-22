@@ -173,16 +173,10 @@ class _ChangePwdPageState extends State<ChangePwdPage> {
                   new MaterialPageRoute(builder: (context) => LoginPage()),
                       (route) => route == null);
             }
-            Flushbar(
-              message:  "${msg['msg']}",
-              duration:  Duration(seconds: 3),
-            )..show(context);
+            Constant.useFlush(msg['msg'], context);
           });
         }else{
-          Flushbar(
-            message:  "$showMsg",
-            duration:  Duration(seconds: 3),
-          )..show(context);
+          Constant.useFlush(showMsg, context);
         }
       });
     };

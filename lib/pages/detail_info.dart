@@ -8,8 +8,7 @@ class DetailInfo extends StatelessWidget {
   ExperimentInfo experimentInfo;
   DetailInfo({this.experimentInfo});
   final _normalFont = const TextStyle(fontSize: 18.0);
-  final _titleFont =
-      const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600);
+  final _titleFont = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600);
 
   @override
   Widget build(BuildContext context) {

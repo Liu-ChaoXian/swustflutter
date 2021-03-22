@@ -88,7 +88,7 @@ class UserPage extends StatelessWidget {
                                         width: 10,
                                       ),
                                       Text('学生学号：', style: _titleFont),
-                                      Text('${_userInfo.studyID}',
+                                      Text('${_userInfo.userAccount}',
                                           style: _normalFont),
                                     ],
                                   )),

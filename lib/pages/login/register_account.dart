@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:swustflutter/pages/login/login_page.dart';
 import '../../client/swust_api_client.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:swustflutter/config/constant.dart';
 
 class RegisterAccount extends StatefulWidget{
   SwustAPIClient apiClient = new SwustAPIClient();
@@ -228,17 +229,11 @@ class _RegisterAccountState extends State<RegisterAccount> {
                   new MaterialPageRoute(builder: (context) => LoginPage()),
                       (route) => route == null);
             }
-            Flushbar(
-              message:  "$msg",
-              duration:  Duration(seconds: 3),
-            )..show(context);
+            Constant.useFlush(msg, context);
           });
 //          print('执行新增函数后' + showMsg);
         }else{
-          Flushbar(
-            message:  "$showMsg",
-            duration:  Duration(seconds: 3),
-          )..show(context);
+          Constant.useFlush(showMsg, context);
         }
 //        print('showMsg:${showMsg}');
       });

@@ -1,5 +1,7 @@
 import 'package:swustflutter/config/user_config.dart';
 import 'package:swustflutter/model/user_info.dart';
+import 'package:flushbar/flushbar.dart';
+import 'package:flutter/material.dart';
 
 class Constant {
   static const String userAccount = 'UserAccount';
@@ -16,6 +18,19 @@ class Constant {
   static const String defaultExternalStorageDirectoryPrefix = '/Android/data/';
 
   static UserConfig userConfigInfo;
-  static UserInfo userInfo = null;
+  static UserInfo userInfo;
   static const baseUrl = 'http://81.70.222.171:80';
+
+  static void useFlush(String msg, BuildContext context) {
+    Flushbar(
+      flushbarStyle: FlushbarStyle.FLOATING,
+      flushbarPosition: FlushbarPosition.TOP,
+      margin: EdgeInsets.all(8),
+      borderRadius: 8,
+      message:  "${msg}",
+      backgroundColor: Colors.red,
+      duration:  Duration(seconds: 2),
+      boxShadows: [BoxShadow(color: Colors.blue[800], offset: Offset(0.0, 2.0), blurRadius: 3.0,)],
+    )..show(context);
+  }
 }

@@ -14,7 +14,7 @@ class SwustAPIClient {
 //      'userName': 'LiuChaoXian',
 //      'password': '201515'
 //    };
-    Options options = Options(headers: {HttpHeaders.acceptHeader:"Content-Type: application/json"});
+    Options options = Options(headers: {"Content-Type": "application/json"});
     var apiUrl = baseUrl + "/account/create";
     try{
       Response response = await Dio().post(apiUrl, data: paras, options: options);

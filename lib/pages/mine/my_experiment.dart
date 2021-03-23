@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swustflutter/model/experiment_info.dart';
 import 'package:swustflutter/pages/detail_info.dart';
+import 'package:swustflutter/pages/mine/edit_experiment.dart';
 import 'package:swustflutter/pages/mine/sign_page.dart';
 import 'package:swustflutter/pages/mine/userlist_page.dart';
 import '../../client/swust_api_client.dart';
@@ -22,21 +23,26 @@ enum GetState { loading, loaded, fail }
 
 class _MyExperimentState extends State<MyExperiment> {
   final _normalFont = const TextStyle(fontSize: 18.0);
-  final _titlrFont = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400);
+  final _titlrFont =
+      const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400);
+
   /// 页面状态
   GetState _state = GetState.loading;
   SwustAPIClient apiClient = new SwustAPIClient();
+
   /// 实验室信息对象
   ExperimentInfo _experimentInfo;
 
   /// 获取实验室详细信息
-  getDetailInfo() async{
-    return await apiClient.getDetailInfo(Constant.userInfo.labs[0], Constant.userConfigInfo.authtoken);
+  getDetailInfo() async {
+    return await apiClient.getDetailInfo(
+        Constant.userInfo.labs[0], Constant.userConfigInfo.authtoken);
   }
+
   @override
   void initState() {
     super.initState();
-    getDetailInfo().then((value){
+    getDetailInfo().then((value) {
       setState(() {
         _experimentInfo = ExperimentInfo.fromJsonAll(value);
         _state = GetState.loaded;
@@ -46,9 +52,13 @@ class _MyExperimentState extends State<MyExperiment> {
 
   _getExperimentInfo() {
     return () {
-      Navigator.push(context, MaterialPageRoute(
+      Navigator.push(
+          context,
+          MaterialPageRoute(
               builder: (context) => DetailInfo(
-                    experimentInfo: _experimentInfo,)));};
+                    experimentInfo: _experimentInfo,
+                  )));
+    };
   }
 
   Widget _buildInfo() {
@@ -61,8 +71,11 @@ class _MyExperimentState extends State<MyExperiment> {
         child: Row(
           children: <Widget>[
             ClipOval(
-              child: Image.network(Constant.baseUrl + _experimentInfo.labAvatarUrl,
-                  width: 64, height: 64, fit: BoxFit.cover),
+              child: Image.network(
+                  Constant.baseUrl + _experimentInfo.labAvatarUrl,
+                  width: 64,
+                  height: 64,
+                  fit: BoxFit.cover),
             ),
             SizedBox(width: 15),
             Expanded(
@@ -116,9 +129,15 @@ class _MyExperimentState extends State<MyExperiment> {
       case 1:
         return Column(
           children: <Widget>[
-            SizedBox(height: 10,),
-            _buildItem(title: '发起签到',
-                icon: Icon(Icons.location_on, color: Colors.blue,),
+            SizedBox(
+              height: 10,
+            ),
+            _buildItem(
+                title: '发起签到',
+                icon: Icon(
+                  Icons.location_on,
+                  color: Colors.blue,
+                ),
                 method: () => {
                       Navigator.push(
                           context,
@@ -127,20 +146,39 @@ class _MyExperimentState extends State<MyExperiment> {
                                     text: "发布成功",
                                   )))
                     }),
-            SizedBox(height: 10,),
-            _buildItem(title: '修改实验室信息',
-                icon: Icon(Icons.edit, color: Colors.indigoAccent,),
+            SizedBox(
+              height: 10,
+            ),
+            _buildItem(
+                title: '修改实验室信息',
+                icon: Icon(
+                  Icons.edit,
+                  color: Colors.indigoAccent,
+                ),
                 method: () => {
-                      Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => AddExperiment()))}),
-            SizedBox(height: 10,),
-            _buildItem(title: '实验室成员',
-                icon: Icon(Icons.people, color: Colors.yellow,),
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EditExperiment()))
+                    }),
+            SizedBox(
+              height: 10,
+            ),
+            _buildItem(
+                title: '实验室成员',
+                icon: Icon(
+                  Icons.people,
+                  color: Colors.yellow,
+                ),
                 method: () => {
-                      Navigator.push(context, MaterialPageRoute(
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
                               builder: (context) => UserListPage()))
                     }),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             _buildItem(
                 title: '会议记录',
                 icon: Icon(
@@ -167,7 +205,7 @@ class _MyExperimentState extends State<MyExperiment> {
                   Icons.directions_run_sharp,
                   color: Colors.red,
                 ),
-                method: a),
+                method: () => {}),
           ],
         );
         break;
@@ -249,29 +287,35 @@ class _MyExperimentState extends State<MyExperiment> {
   }
 
   Widget buildInnerWidget() {
-    return Constant.userInfo.labs.length == 0 ?
-      Center(
-        heightFactor: 5,
-        child: Column(
-          children: [
-            SizedBox(height: 200,),
-            Icon(Icons.hourglass_empty),
-            Text('您还未加入实验室！',style: _normalFont,)
-          ],
-        ),
-      ) : Container(
-      margin: EdgeInsets.only(
-        left: 15,
-        right: 15,
-      ),
-      child: Column(
-        children: <Widget>[
-          _buildInfo(),
-          SizedBox(height: 20),
-          _buildContent(Constant.userInfo.userType),
-        ],
-      ),
-    );
+    return Constant.userInfo.labs.length == 0
+        ? Center(
+            heightFactor: 5,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 200,
+                ),
+                Icon(Icons.hourglass_empty),
+                Text(
+                  '您还未加入实验室！',
+                  style: _normalFont,
+                )
+              ],
+            ),
+          )
+        : Container(
+            margin: EdgeInsets.only(
+              left: 15,
+              right: 15,
+            ),
+            child: Column(
+              children: <Widget>[
+                _buildInfo(),
+                SizedBox(height: 20),
+                _buildContent(Constant.userInfo.userType),
+              ],
+            ),
+          );
   }
 
   @override
@@ -285,10 +329,5 @@ class _MyExperimentState extends State<MyExperiment> {
       ),
       body: buildWidget(),
     );
-  }
-
-  dynamic a() async {
-    Map<String, dynamic> r = await SwustApi().Get('info', "/user/info");
-    print(r);
   }
 }

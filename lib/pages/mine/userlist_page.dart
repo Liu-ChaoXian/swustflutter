@@ -22,7 +22,7 @@ enum UserListState { loading, loaded, fail }
 
 class _UserListState extends State<UserListPage> {
   UserListState _filesState = UserListState.loaded;
-  List users;
+  List users = [];
 
   ///用户列表
 
@@ -33,20 +33,20 @@ class _UserListState extends State<UserListPage> {
   @override
   void initState() {
     super.initState();
-    users = [
-      {"memberId": "5120173553", "memberName": "LiuChaoXian"},
-      {"memberId": "5120173554", "memberName": "LiuChaoXian"},
-      {"memberId": "5120173555", "memberName": "LiuChaoXian"},
-      {"memberId": "5120173553", "memberName": "LiuChaoXian"},
-      {"memberId": "5120173554", "memberName": "LiuChaoXian"},
-      {"memberId": "5120173555", "memberName": "LiuChaoXian"},
-      {"memberId": "5120173553", "memberName": "LiuChaoXian"},
-      {"memberId": "5120173554", "memberName": "LiuChaoXian"},
-      {"memberId": "5120173555", "memberName": "LiuChaoXian"},
-      {"memberId": "5120173553", "memberName": "LiuChaoXian"},
-      {"memberId": "5120173554", "memberName": "LiuChaoXian"},
-      {"memberId": "5120173555", "memberName": "LiuChaoXian"}
-    ];
+    _getUserList().then((value) {
+      setState(() {
+        users = value;
+        print(users);
+      });
+    });
+  }
+
+  _getUserList() async {
+    Map<String, dynamic> params = {"labId": Constant.userInfo.labs[0]};
+    Map<String, dynamic> value =
+        await SwustApi().Get('获取实验室成员', '/lab/members', params: params);
+    print(value);
+    return value['members'];
   }
 
   ///实验室界面

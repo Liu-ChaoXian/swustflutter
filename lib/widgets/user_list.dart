@@ -51,6 +51,7 @@ class UserListWidget extends StatelessWidget {
           title: Row(
             children: <Widget>[
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("学号:      " + userInfo['memberId']),
                   Text("姓名:      " + userInfo['memberName']),

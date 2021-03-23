@@ -28,18 +28,28 @@ class SwustApi {
   Future<Map<String, dynamic>> Get(String title, String path,
       {Map params}) async {
     Response response;
-    if (params != null) {
-      response = await dio.get(path, queryParameters: params);
-    } else {
-      response = await dio.get(path);
+    try {
+      if (params != null) {
+        response = await dio.get(path, queryParameters: params);
+      } else {
+        response = await dio.get(path);
+      }
+    } on Error catch (e) {
+      print(e);
     }
+
     return response == null ? {"msg": "出错了"} : response.data;
   }
 
   Future<Map<String, dynamic>> Post(String title, String path,
       {Map json, FormData formData}) async {
-    Response response =
-        await dio.post(path, data: json == null ? formData : json);
+    Response response;
+    try {
+      response = await dio.post(path, data: json == null ? formData : json);
+    } on Error catch (e) {
+      print(e);
+      return {"msg": "出错了"};
+    }
 
     return response == null ? {"msg": "出错了"} : response.data;
     //更新profile中的token信息

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../model/user_info.dart';
 import 'package:swustflutter/config/constant.dart';
+import 'change_user_info.dart';
 
 class UserPage extends StatelessWidget {
   UserInfo _userInfo;
@@ -19,6 +20,26 @@ class UserPage extends StatelessWidget {
             Navigator.of(context).pop();
           },
         ),
+        actions: <Widget>[
+          new PopupMenuButton<String>(
+              onSelected: (String value){
+                switch(value){
+                  case '编辑':
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => ChangeUserInfo()));
+                    break;
+                  default:
+                    break;
+                }
+              },
+              itemBuilder: (BuildContext context) =>
+              <PopupMenuEntry<String>>[
+                PopupMenuItem(//菜单内容
+                  value: '编辑',
+                  child: Text('编辑个人信息'),
+                ),
+              ])
+        ],
       ),
       body: Container(
         margin: EdgeInsets.all(10),

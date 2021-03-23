@@ -4,6 +4,7 @@ import 'package:swustflutter/client/swust_api_client.dart';
 
 import '../../client/swust_api_client.dart';
 import '../../client/swust_api_client.dart';
+import '../../main.dart';
 class ChangeUserInfo extends StatefulWidget {
   @override
   _ChangeUserInfoState createState() => _ChangeUserInfoState();
@@ -56,7 +57,8 @@ class _ChangeUserInfoState extends State<ChangeUserInfo> {
       paras['newEmail'] = newEmail;
       _editUserInfo(paras).then((value) {
         setState(() {
-          Navigator.of(context).pop();
+          Navigator.push(context, MaterialPageRoute(builder: (context) =>
+              MyHomePage()));
           Constant.useFlush(value['msg'], context);
         });
       });

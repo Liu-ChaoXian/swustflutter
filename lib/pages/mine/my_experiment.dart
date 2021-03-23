@@ -6,7 +6,10 @@ import 'package:swustflutter/model/experiment_info.dart';
 import 'package:swustflutter/pages/detail_info.dart';
 import 'package:swustflutter/pages/mine/sign_page.dart';
 import 'package:swustflutter/pages/mine/userlist_page.dart';
-import 'user_page.dart';
+import '../../client/swust_api_client.dart';
+import 'package:swustflutter/config/constant.dart';
+import '../../config/constant.dart';
+import '../../model/experiment_info.dart';
 import 'add_experiment.dart';
 import '../../model/user_info.dart';
 
@@ -15,48 +18,37 @@ class MyExperiment extends StatefulWidget {
   _MyExperimentState createState() => _MyExperimentState();
 }
 
+enum GetState { loading, loaded, fail }
+
 class _MyExperimentState extends State<MyExperiment> {
   final _normalFont = const TextStyle(fontSize: 18.0);
   final _titlrFont = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400);
-  final List<String> level = ['', '普通用户', '实验室负责人', '系统管理员'];
-  ExperimentInfo _experimentInfo = ExperimentInfo(
-      experimentName: '数据与知识工程数据可视化的实验室',
-      experimentID: 1,
-      experimentAddress: '东九A238',
-      detailInfo: '软件测试实验是一个很棒的实验室！！！软件测试实验是一个很棒的实验室！！！',
-      director: '潘娅',
-      imageLink: [
-        'assets/image1.jpg',
-        'assets/image2.jpg',
-        'assets/image3.gif'
-      ],
-      achievement: '各类比赛斩获佳绩',
-      time: '每年6月份');
-
-  String _userAccount = 'user1';
-  int _nameLength;
-  int userLevel = 2;
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  /// 页面状态
+  GetState _state = GetState.loading;
+  SwustAPIClient apiClient = new SwustAPIClient();
+  /// 实验室信息对象
+  ExperimentInfo _experimentInfo;
 
   /// 获取实验室详细信息
-  getDetailInfo() {
-
+  getDetailInfo() async{
+    return await apiClient.getDetailInfo(Constant.userInfo.labs[0], Constant.userConfigInfo.authtoken);
   }
   @override
   void initState() {
     super.initState();
-
+    getDetailInfo().then((value){
+      setState(() {
+        _experimentInfo = ExperimentInfo.fromJsonAll(value);
+        _state = GetState.loaded;
+      });
+    });
   }
 
   _getExperimentInfo() {
     return () {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
+      Navigator.push(context, MaterialPageRoute(
               builder: (context) => DetailInfo(
-                    experimentInfo: _experimentInfo,
-                  )));
-    };
+                    experimentInfo: _experimentInfo,)));};
   }
 
   Widget _buildInfo() {
@@ -69,7 +61,7 @@ class _MyExperimentState extends State<MyExperiment> {
         child: Row(
           children: <Widget>[
             ClipOval(
-              child: Image.asset('assets/user-head.jpg',
+              child: Image.network(Constant.baseUrl + _experimentInfo.labAvatarUrl,
                   width: 64, height: 64, fit: BoxFit.cover),
             ),
             SizedBox(width: 15),
@@ -81,7 +73,7 @@ class _MyExperimentState extends State<MyExperiment> {
                     height: 25,
                   ),
                   Text(
-                    _experimentInfo.getName(),
+                    _experimentInfo.experimentName,
                     style: _titlrFont,
                     maxLines: 2,
                     textAlign: TextAlign.center,
@@ -121,55 +113,30 @@ class _MyExperimentState extends State<MyExperiment> {
 
   Widget _buildContent(int userLevel) {
     switch (userLevel) {
-      case 2:
+      case 1:
         return Column(
           children: <Widget>[
-            SizedBox(
-              height: 10,
-            ),
-            _buildItem(
-                title: '发起签到',
-                icon: Icon(
-                  Icons.location_on,
-                  color: Colors.blue,
-                ),
+            SizedBox(height: 10,),
+            _buildItem(title: '发起签到',
+                icon: Icon(Icons.location_on, color: Colors.blue,),
                 method: () => {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => SignPage()))
                     }),
-            SizedBox(
-              height: 10,
-            ),
-            _buildItem(
-                title: '修改实验室信息',
-                icon: Icon(
-                  Icons.edit,
-                  color: Colors.indigoAccent,
-                ),
+            SizedBox(height: 10,),
+            _buildItem(title: '修改实验室信息',
+                icon: Icon(Icons.edit, color: Colors.indigoAccent,),
                 method: () => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddExperiment()))
-                    }),
-            SizedBox(
-              height: 10,
-            ),
-            _buildItem(
-                title: '实验室成员',
-                icon: Icon(
-                  Icons.people,
-                  color: Colors.yellow,
-                ),
+                      Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => AddExperiment()))}),
+            SizedBox(height: 10,),
+            _buildItem(title: '实验室成员',
+                icon: Icon(Icons.people, color: Colors.yellow,),
                 method: () => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
+                      Navigator.push(context, MaterialPageRoute(
                               builder: (context) => UserListPage()))
                     }),
-            SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: 10,),
             _buildItem(
                 title: '会议记录',
                 icon: Icon(
@@ -254,6 +221,51 @@ class _MyExperimentState extends State<MyExperiment> {
     }
   }
 
+  Widget buildWidget() {
+    switch (_state) {
+      case GetState.loading:
+        return Center(
+          heightFactor: 5,
+          child: Column(
+            children: <Widget>[
+              CircularProgressIndicator(strokeWidth: 4.0),
+              Text('正在搜索')
+            ],
+          ),
+        );
+      case GetState.loaded:
+        return buildInnerWidget();
+      default:
+        break;
+    }
+  }
+
+  Widget buildInnerWidget() {
+    return Constant.userInfo.labs.length == 0 ?
+      Center(
+        heightFactor: 5,
+        child: Column(
+          children: [
+            SizedBox(height: 200,),
+            Icon(Icons.hourglass_empty),
+            Text('您还未加入实验室！',style: _normalFont,)
+          ],
+        ),
+      ) : Container(
+      margin: EdgeInsets.only(
+        left: 15,
+        right: 15,
+      ),
+      child: Column(
+        children: <Widget>[
+          _buildInfo(),
+          SizedBox(height: 20),
+          _buildContent(Constant.userInfo.userType),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -263,19 +275,7 @@ class _MyExperimentState extends State<MyExperiment> {
         elevation: 0.0,
         automaticallyImplyLeading: true,
       ),
-      body: Container(
-        margin: EdgeInsets.only(
-          left: 15,
-          right: 15,
-        ),
-        child: Column(
-          children: <Widget>[
-            _buildInfo(),
-            SizedBox(height: 20),
-            _buildContent(userLevel),
-          ],
-        ),
-      ),
+      body: buildWidget(),
     );
   }
 

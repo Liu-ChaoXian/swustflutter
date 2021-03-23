@@ -43,7 +43,7 @@ class _ApplyListWidgetState extends State<ApplyListWidget> {
   }
 
   failJudge(String userAccount) {
-    paras['labId'] = userAccount;
+    paras['userAccount'] = userAccount;
     paras['result'] = 'fail';
     getFailJudge(paras).then((value) {
       print(value);

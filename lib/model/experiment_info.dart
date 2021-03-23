@@ -18,13 +18,25 @@ class ExperimentInfo{
   String detailInfo;
 
   ///图片信息  可以保存多张图片
-  List<String> imageLink;
+  List<dynamic> imageLink;
 
   ///实验室成果
   String achievement;
 
   ///实验室招新时间
   String time;
+
+  /// 申请人ID
+  String applicantId;
+
+  /// 联系方式
+  String labContact;
+
+  /// 实验室ID
+  String labId;
+
+  ///实验室头像
+  String labAvatarUrl;
 
   ExperimentInfo({
     this.experimentName,
@@ -39,5 +51,36 @@ class ExperimentInfo{
 
   String getName(){
     return this.experimentName;
+  }
+
+  ExperimentInfo.fromJson(Map<String, dynamic> json){
+    this.applicantId = json['applicantId'];
+    this.director = json['applicantName'];
+    this.labContact = json['labContact'];
+    this.detailInfo = json['labIntro'];
+    this.experimentName = json['labName'];
+    this.labId = json['labId'];
+    this.achievement = json['labHonor'];
+    this.experimentAddress = json['labAddr'];
+  }
+  ExperimentInfo.fromJsonDefault(Map<String, dynamic> json){
+    this.labAvatarUrl = json['labAvatarUrl'];
+    this.director = json['labManagerName'];
+    this.labContact = json['labContact'];
+    this.experimentName = json['labName'];
+    this.labId = json['labId'];
+  }
+  ExperimentInfo.fromJsonAll(Map<String, dynamic> json) {
+    this.experimentAddress = json['labAddr'];
+    this.labAvatarUrl = json['labAvatarUrl'];
+    this.labContact = json['labContact'];
+    this.achievement = json['labHonor'];
+    this.labId = json['labId'];
+    this.detailInfo = json['labIntro'];
+    this.director = json['labManagerName'];
+    this.experimentName = json['labName'];
+    this.time = json['labRecruitTime'];
+    this.imageLink = json['pictures'];
+
   }
 }

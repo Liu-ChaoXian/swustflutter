@@ -66,23 +66,6 @@ class SwustAPIClient {
     }
   }
 
-  /// 获取实验室列表
-  getExperimentList(String token) async{
-    Map<String, dynamic> header = {
-      "auth-token": token,
-    };
-    Options options = Options(headers: header);
-    var apiUrl = baseUrl + "/lab/default_list";
-    try{
-      Response response = await Dio().get(apiUrl, options: options);
-      print('获取实验室列表结果：${response.data}');
-      /// 获取到的是Map类型
-      return response.data;
-    }on DioError catch(e){  /// 异常捕获
-      print('获取实验室列表结果：${e.response.data}');
-      return e.response.data;
-    }
-  }
   /// 用户注销账号
   Future<Map<String,dynamic>> logoffAccount(String token) async{
     Map<String, dynamic> header = {
@@ -139,6 +122,117 @@ class SwustAPIClient {
     }
   }
 
+  /// 获取所有创建待审核实验室
+  Future<List<dynamic>> getexamineList(String token) async {
+    Map<String, dynamic> header = {
+      "auth-token": token,
+      'Content-Type': 'application/json'
+    };
+    Options options = Options(headers: header);
+    var apiUrl = baseUrl + "/lab/examineList";
+    try{
+      Response response = await Dio().get(apiUrl, options: options);
+      print('获取所有创建待审核实验室：${response.data}');
+      /// 获取到的是Map类型
+      return response.data['labs'];
+    }on DioError catch(e){  /// 异常捕获
+      print('获取所有创建待审核实验室：' + e.response.data);
+      return e.response.data;
+    }
+  }
 
-//  getDetail
+  /// 获取实验室列表
+  Future<List<dynamic>> getExperimentList(String token) async{
+    Map<String, dynamic> header = {
+      "auth-token": token,
+      'Content-Type': 'application/json'
+    };
+    Options options = Options(headers: header);
+    var apiUrl = baseUrl + "/lab/default_list";
+    try{
+      Response response = await Dio().get(apiUrl, options: options);
+      print('获取实验室列表结果：${response.data}');
+      /// 获取到的是Map类型
+      return response.data['labs'];
+    }on DioError catch(e){  /// 异常捕获
+      print('获取实验室列表结果：${e.response.data}');
+      return e.response.data;
+    }
+  }
+
+  /// 审核实验室
+  Future<dynamic> judgeExperiment(Map paras, String token) async{
+    Map<String, dynamic> header = {
+      "auth-token": token,
+      'Content-Type': 'application/json'
+    };
+    Options options = Options(headers: header);
+    var apiUrl = baseUrl + "/lab/examine/lab";
+    try{
+      print(paras);
+      Response response = await Dio().post(apiUrl, data: paras, options: options);
+      print('审核实验室：${response.data}');
+      /// 获取到的是Map类型
+      return response.data['msg'];
+    }on DioError catch(e){  /// 异常捕获
+      print('审核实验室：' + e.response.data);
+      return e.response.data;
+    }
+  }
+
+  /// 获取实验室详情信息
+  Future<Map<String, dynamic>> getDetailInfo(String labId, String token) async {
+    Map<String, dynamic> header = {
+      "auth-token": token,
+      'Content-Type': 'application/json'
+    };
+    Options options = Options(headers: header);
+    var apiUrl = baseUrl + "/lab/detail?labId=$labId";
+    try{
+      Response response = await Dio().get(apiUrl, options: options);
+      print('获取实验室详情信息：${response.data}');
+      /// 获取到的是Map类型
+      return response.data;
+    }on DioError catch(e){  /// 异常捕获
+      print('获取实验室详情信息：' + e.response.data);
+      return e.response.data;
+    }
+  }
+
+  ///用户申请加入实验室
+  Future<Map<String, dynamic>> applyExperiment(Map paras, String token) async {
+    Map<String, dynamic> header = {
+      "auth-token": token,
+      'Content-Type': 'application/json'
+    };
+    Options options = Options(headers: header);
+    var apiUrl = baseUrl + "/lab/join";
+    try{
+      Response response = await Dio().post(apiUrl, data: paras, options: options);
+      print('用户申请加入实验室：${response.data}');
+      /// 获取到的是Map类型
+      return response.data;
+    }on DioError catch(e){  /// 异常捕获
+      print('用户申请加入实验室：' + e.response.data);
+      return e.response.data;
+    }
+  }
+  /// 搜索实验室
+  Future<List<dynamic>> getSearchList(String token, String keyword) async {
+    Map<String, dynamic> header = {
+      "auth-token": token,
+      'Content-Type': 'application/json'
+    };
+    Options options = Options(headers: header);
+    var apiUrl = baseUrl + "/lab/search?keyword=$keyword";
+    try{
+      Response response = await Dio().get(apiUrl, options: options);
+      print('搜索实验室：${response.data}');
+      /// 获取到的是Map类型
+      return response.data['labs'];
+    }on DioError catch(e){  /// 异常捕获
+      print('搜索实验室：' + e.response.data);
+      return e.response.data;
+    }
+  }
 }

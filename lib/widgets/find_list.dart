@@ -1,13 +1,16 @@
 import 'package:swustflutter/model/experiment_info.dart';
-
+import 'package:swustflutter/config/constant.dart';
 import 'package:flutter/material.dart';
 
+import '../model/experiment_info.dart';
+import '../model/experiment_info.dart';
+
 ///回调函数
-typedef ExperimentOnTap = void Function(ExperimentInfo file);
+typedef ExperimentOnTap = void Function(String labId);
 
 class ExperimentListWidget extends StatelessWidget { ///实验室列表
 
-  var experiment = List<ExperimentInfo>();
+  List<dynamic> experiment;
 
   ExperimentOnTap onFileTap;
 
@@ -33,7 +36,8 @@ class ExperimentListWidget extends StatelessWidget { ///实验室列表
           shrinkWrap: true,
           itemCount: this.experiment.length,
           itemBuilder: (BuildContext context, int index) {
-             return _buildExperimentItem(this.experiment[index]);
+             ExperimentInfo experimentInfo = ExperimentInfo.fromJsonDefault(this.experiment[index]);
+             return _buildExperimentItem(experimentInfo);
           },
         );
 
@@ -46,7 +50,7 @@ class ExperimentListWidget extends StatelessWidget { ///实验室列表
               Border(bottom: BorderSide(width: 0.5, color: Color(0xffe5e5e5))),
         ),
         child: ListTile(
-          leading: Image.asset(experimentInfo.imageLink[0]),
+          leading: Image.network(Constant.baseUrl + experimentInfo.labAvatarUrl),
           title: Row(
             children: <Widget>[
               Expanded(child: Text(experimentInfo.experimentName)),
@@ -56,7 +60,7 @@ class ExperimentListWidget extends StatelessWidget { ///实验室列表
         ),
       ),
       onTap: () {
-        if (null != this.onFileTap) this.onFileTap(experimentInfo);
+        if (null != this.onFileTap) this.onFileTap(experimentInfo.labId);
       },
     );
   }

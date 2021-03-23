@@ -7,6 +7,9 @@ import 'package:swustflutter/widgets/find_list.dart';
 import 'package:swustflutter/widgets/search_history.dart';
 import 'package:swustflutter/widgets/search_input.dart';
 import 'package:flutter/material.dart';
+import 'package:swustflutter/config/constant.dart';
+import '../../client/swust_api_client.dart';
+
 
 
 class SearchPage extends StatefulWidget {
@@ -14,10 +17,8 @@ class SearchPage extends StatefulWidget {
   SearchHistoryProvider searchHistoryProvider = SearchHistoryProvider();///历史记录
 
   ExperStore experStore;
-  ///实验室列表
-  List<ExperimentInfo> experimentList;
 
-  SearchPage(this.experimentList);
+  SearchPage();
 
   @override
   State<StatefulWidget> createState() => SearchPageState();
@@ -29,7 +30,14 @@ class SearchPageState extends State<SearchPage> {
   var _historyWords = List<SearchHistory>();
   var _searchKeyWord;
   var _searchState = SearchState.typing;
-  var _searchResult = List<ExperimentInfo>();
+
+  ///搜索结果实验室列表
+  List<dynamic> _searchResult = [];
+  SwustAPIClient apiClient = new SwustAPIClient();
+
+  Future<List<dynamic>> _searchKeyword(String value) async {
+    return await apiClient.getSearchList(Constant.userConfigInfo.authtoken, value);
+  }
 
   ///搜索历史的插入与移除
   void _onSearchHistoryEvent(SearchHistoryEvent event, SearchHistory history) {
@@ -106,28 +114,25 @@ class SearchPageState extends State<SearchPage> {
     setState(() => _searchState = SearchState.loading);///修改状态
     ///
     /// 在列表中查找实验室
-    /*widget.experStore.search(value, store: widget.experimentList)
-          .then((result){
-        setState(() {
-          _searchState = SearchState.done;
-          _searchResult = result;
-        });
-      });*/
-    setState(() {
-      _searchState = SearchState.done;
+    _searchKeyWord(value).then((result){
+      setState(() {
+        _searchState = SearchState.done;
+        _searchResult = result;
+      });
+      ///保存搜索记录
+      _onSearchHistoryEvent(SearchHistoryEvent.insert, SearchHistory(value));
     });
-    ///保存搜索记录
-    _onSearchHistoryEvent(SearchHistoryEvent.insert, SearchHistory(value));
+
     return ;
   }
 
-  void _onOpenFile(ExperimentInfo experimentInfo) {
-
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                DetailInfo(experimentInfo: experimentInfo)));
+  void _onOpenFile(String labId) {
+      /// 跳转到实验室详情界面
+//    Navigator.push(
+//        context,
+//        MaterialPageRoute(
+//            builder: (context) =>
+//                DetailInfo(experimentInfo: experimentInfo)));
   }
 
   void _onSearchTextChanged(String value) {

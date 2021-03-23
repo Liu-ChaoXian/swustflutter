@@ -1,18 +1,16 @@
 import 'package:swustflutter/common/SwustApi.dart';
 import 'package:swustflutter/config/constant.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swustflutter/model/experiment_info.dart';
 import 'package:swustflutter/pages/detail_info.dart';
+import 'package:swustflutter/pages/mine/apply_list_page.dart';
 import 'package:swustflutter/pages/mine/edit_experiment.dart';
 import 'package:swustflutter/pages/mine/sign_page.dart';
 import 'package:swustflutter/pages/mine/userlist_page.dart';
 import '../../client/swust_api_client.dart';
-import 'package:swustflutter/config/constant.dart';
 import '../../config/constant.dart';
 import '../../model/experiment_info.dart';
 import 'add_experiment.dart';
-import '../../model/user_info.dart';
 
 class MyExperiment extends StatefulWidget {
   @override
@@ -195,7 +193,13 @@ class _MyExperimentState extends State<MyExperiment> {
                   Icons.list,
                   color: Colors.pink,
                 ),
-                method: () => {}),
+                method: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ApplyListPage(_experimentInfo.labId)));
+                }),
             SizedBox(
               height: 10,
             ),
@@ -235,12 +239,10 @@ class _MyExperimentState extends State<MyExperiment> {
                   Icons.people,
                   color: Colors.yellow,
                 ),
-                method: () => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => UserListPage()))
-                    }),
+                method: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => UserListPage()));
+                }),
             SizedBox(
               height: 10,
             ),

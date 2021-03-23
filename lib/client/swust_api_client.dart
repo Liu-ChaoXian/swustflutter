@@ -266,4 +266,44 @@ class SwustAPIClient {
       return e.response.data;
     }
   }
+
+  /// 获取申请列表
+  Future<List<dynamic>> getApplyList(String token, String labId) async {
+    Map<String, dynamic> header = {
+      "auth-token": token,
+      'Content-Type': 'application/json'
+    };
+    Options options = Options(headers: header);
+    var apiUrl = baseUrl + "/lab/applyList?labId=$labId";
+    try {
+      Response response = await Dio().get(apiUrl, options: options);
+      print('获取申请列表结果：${response.data}');
+      /// 获取到的是Map类型
+      return response.data['applyList'];
+    } on DioError catch (e) {
+      /// 异常捕获
+      print('获取申请列表结果：${e.response.data}');
+      return e.response.data;
+    }
+  }
+
+  /// 管理员审核用户申请
+  Future<Map<String,dynamic>> judgeApplyUser(Map paras, String token) async{
+    Map<String, dynamic> header = {
+      "auth-token": token,
+      'Content-Type': 'application/json'
+    };
+    Options options = Options(headers: header);
+    var apiUrl = baseUrl + "/lab/examine/user";
+    try{
+      print(paras);
+      Response response = await Dio().post(apiUrl, data: paras, options: options);
+      print('管理员审核用户申请：${response.data}');
+      /// 获取到的是Map类型
+      return response.data;
+    }on DioError catch(e){  /// 异常捕获
+      print('管理员审核用户申请：' + e.response.data);
+      return e.response.data;
+    }
+  }
 }

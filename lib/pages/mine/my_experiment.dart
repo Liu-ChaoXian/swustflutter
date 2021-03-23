@@ -130,8 +130,12 @@ class _MyExperimentState extends State<MyExperiment> {
                   color: Colors.blue,
                 ),
                 method: () => {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => SignPage()))
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignPage(
+                                    text: "发布成功",
+                                  )))
                     }),
             SizedBox(
               height: 10,
@@ -206,8 +210,12 @@ class _MyExperimentState extends State<MyExperiment> {
                   color: Colors.blue,
                 ),
                 method: () => {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => SignPage()))
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignPage(
+                                    text: "签到成功",
+                                  )))
                     }),
             SizedBox(
               height: 10,

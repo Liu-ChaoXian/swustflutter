@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 
 class SignPage extends StatefulWidget {
+  String text;
+  SignPage({Key key, this.text}) : super(key: key);
   @override
   _SignPageState createState() => _SignPageState();
 }
@@ -89,7 +91,7 @@ class _SignPageState extends State<SignPage> {
         height: 80.0,
         child: Center(
           child: Text(
-            '签到成功: $pin',
+            '${widget.text}: $pin',
             style: const TextStyle(fontSize: 25.0),
           ),
         ),
@@ -97,7 +99,9 @@ class _SignPageState extends State<SignPage> {
       backgroundColor: Colors.deepPurpleAccent,
     );
     Scaffold.of(context)
+      // ignore: deprecated_member_use
       ..hideCurrentSnackBar()
+      // ignore: deprecated_member_use
       ..showSnackBar(snackBar);
   }
 }

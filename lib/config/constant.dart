@@ -27,10 +27,16 @@ class Constant {
       flushbarPosition: FlushbarPosition.TOP,
       margin: EdgeInsets.all(8),
       borderRadius: 8,
-      message:  "${msg}",
+      message: "${msg}",
       backgroundColor: Colors.red,
-      duration:  Duration(seconds: 2),
-      boxShadows: [BoxShadow(color: Colors.blue[800], offset: Offset(0.0, 2.0), blurRadius: 3.0,)],
+      duration: Duration(seconds: 2),
+      boxShadows: [
+        BoxShadow(
+          color: Colors.blue[800],
+          offset: Offset(0.0, 2.0),
+          blurRadius: 3.0,
+        )
+      ],
     )..show(context);
   }
 }

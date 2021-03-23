@@ -8,7 +8,8 @@ import '../model/experiment_info.dart';
 ///回调函数
 typedef ExperimentOnTap = void Function(String labId);
 
-class ExperimentListWidget extends StatelessWidget { ///实验室列表
+class ExperimentListWidget extends StatelessWidget {
+  ///实验室列表
 
   List<dynamic> experiment;
 
@@ -26,7 +27,10 @@ class ExperimentListWidget extends StatelessWidget { ///实验室列表
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SizedBox(height: 200),
-              Icon(Icons.hourglass_empty, size: 40,),
+              Icon(
+                Icons.hourglass_empty,
+                size: 40,
+              ),
               Text('未找到相关信息')
             ],
           ),
@@ -36,8 +40,9 @@ class ExperimentListWidget extends StatelessWidget { ///实验室列表
           shrinkWrap: true,
           itemCount: this.experiment.length,
           itemBuilder: (BuildContext context, int index) {
-             ExperimentInfo experimentInfo = ExperimentInfo.fromJsonDefault(this.experiment[index]);
-             return _buildExperimentItem(experimentInfo);
+            ExperimentInfo experimentInfo =
+                ExperimentInfo.fromJsonDefault(this.experiment[index]);
+            return _buildExperimentItem(experimentInfo);
           },
         );
 
@@ -50,7 +55,8 @@ class ExperimentListWidget extends StatelessWidget { ///实验室列表
               Border(bottom: BorderSide(width: 0.5, color: Color(0xffe5e5e5))),
         ),
         child: ListTile(
-          leading: Image.network(Constant.baseUrl + experimentInfo.labAvatarUrl),
+          leading:
+              Image.network(Constant.baseUrl + experimentInfo.labAvatarUrl),
           title: Row(
             children: <Widget>[
               Expanded(child: Text(experimentInfo.experimentName)),

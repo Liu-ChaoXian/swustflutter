@@ -4,14 +4,12 @@ import 'package:swustflutter/config/constant.dart';
 import 'package:flushbar/flushbar.dart';
 import '../login/login_page.dart';
 
-
 class ChangePwdPage extends StatefulWidget {
   @override
   _ChangePwdPageState createState() => _ChangePwdPageState();
 }
 
 class _ChangePwdPageState extends State<ChangePwdPage> {
-
   final _normalFont = const TextStyle(fontSize: 18.0);
   final _borderRadius = BorderRadius.circular(6);
   SwustAPIClient apiClient = new SwustAPIClient();
@@ -43,8 +41,8 @@ class _ChangePwdPageState extends State<ChangePwdPage> {
     });
   }
 
-
-  Widget _buildOldPwdEditTextField() {  ///旧密码输入框
+  Widget _buildOldPwdEditTextField() {
+    ///旧密码输入框
     return Container(
       margin: EdgeInsets.only(top: 20),
       child: TextField(
@@ -54,31 +52,34 @@ class _ChangePwdPageState extends State<ChangePwdPage> {
           _checkUserInput();
         },
         style: _normalFont,
-        obscureText: _oldObscureText, ///是否隐藏正在编辑的文本
+        obscureText: _oldObscureText,
+
+        ///是否隐藏正在编辑的文本
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.person),
-          hintText: '请输入旧密码',
-          filled: true,
-          fillColor: Color.fromARGB(255, 240, 240, 240),
-          contentPadding: EdgeInsets.only(left: 8),
-          border: OutlineInputBorder(
-              borderSide: BorderSide.none, borderRadius: _borderRadius),
-          suffixIcon: IconButton(
-            onPressed: () => setState(() => _oldObscureText = !_oldObscureText),
-            icon: Image.asset(
-              _oldObscureText ? 'assets/closeEye.png' : 'assets/openEye.png',
-              width: 20,
-              height: 20,
-            ),
-            splashColor: Colors.transparent, // 去掉点击阴影效果
-            highlightColor: Colors.transparent, // 去掉点击阴影效果
-          )
-        ),
+            prefixIcon: Icon(Icons.person),
+            hintText: '请输入旧密码',
+            filled: true,
+            fillColor: Color.fromARGB(255, 240, 240, 240),
+            contentPadding: EdgeInsets.only(left: 8),
+            border: OutlineInputBorder(
+                borderSide: BorderSide.none, borderRadius: _borderRadius),
+            suffixIcon: IconButton(
+              onPressed: () =>
+                  setState(() => _oldObscureText = !_oldObscureText),
+              icon: Image.asset(
+                _oldObscureText ? 'assets/closeEye.png' : 'assets/openEye.png',
+                width: 20,
+                height: 20,
+              ),
+              splashColor: Colors.transparent, // 去掉点击阴影效果
+              highlightColor: Colors.transparent, // 去掉点击阴影效果
+            )),
       ),
     );
   }
 
-  Widget _buildPwdEditTextField() {  /// 输入新的登录密码
+  Widget _buildPwdEditTextField() {
+    /// 输入新的登录密码
     return Container(
       margin: EdgeInsets.only(top: 15),
       child: TextField(
@@ -88,7 +89,9 @@ class _ChangePwdPageState extends State<ChangePwdPage> {
           _checkUserInput();
         },
         style: _normalFont,
-        obscureText: _obscureText, ///是否隐藏正在编辑的文本
+        obscureText: _obscureText,
+
+        ///是否隐藏正在编辑的文本
         decoration: InputDecoration(
             prefixIcon: Icon(Icons.lock),
             hintText: '请输入新的登录密码',
@@ -111,7 +114,8 @@ class _ChangePwdPageState extends State<ChangePwdPage> {
     );
   }
 
-  Widget _buildFixPwdEditTextField() {  /// 确认新的登录密码
+  Widget _buildFixPwdEditTextField() {
+    /// 确认新的登录密码
     return Container(
       margin: EdgeInsets.only(top: 15),
       child: TextField(
@@ -121,7 +125,9 @@ class _ChangePwdPageState extends State<ChangePwdPage> {
           _checkUserInput();
         },
         style: _normalFont,
-        obscureText: _obscureFixText, ///是否隐藏正在编辑的文本
+        obscureText: _obscureFixText,
+
+        ///是否隐藏正在编辑的文本
         decoration: InputDecoration(
             prefixIcon: Icon(Icons.lock),
             hintText: '确认新的登录密码',
@@ -131,7 +137,8 @@ class _ChangePwdPageState extends State<ChangePwdPage> {
             border: OutlineInputBorder(
                 borderSide: BorderSide.none, borderRadius: _borderRadius),
             suffixIcon: IconButton(
-              onPressed: () => setState(() => _obscureFixText = !_obscureFixText),
+              onPressed: () =>
+                  setState(() => _obscureFixText = !_obscureFixText),
               icon: Image.asset(
                 _obscureFixText ? 'assets/closeEye.png' : 'assets/openEye.png',
                 width: 20,
@@ -146,43 +153,47 @@ class _ChangePwdPageState extends State<ChangePwdPage> {
 
   String _checkInputText(String _pwdText1, String _pwdText2) {
     /// 两次输入的密码必须一致
-    if(_pwdText1 != _pwdText2){
+    if (_pwdText1 != _pwdText2) {
       return '两次输入的密码不一致！';
-    }else if(_pwdText1.length<6 || _pwdText1.length>16){ /// 密码长度限制
+    } else if (_pwdText1.length < 6 || _pwdText1.length > 16) {
+      /// 密码长度限制
       return '输入密码的长度应是6至16位！';
-    }else{
+    } else {
       return '';
     }
   }
 
-  Future<Map<String, dynamic>> _changePwd(Map paras, String token) async{
-    return await apiClient.changePwd(paras,token);
+  Future<Map<String, dynamic>> _changePwd(Map paras, String token) async {
+    return await apiClient.changePwd(paras, token);
   }
 
-  _getLoginButtonPressed() {  /// 确认按钮事件跳转
+  _getLoginButtonPressed() {
+    /// 确认按钮事件跳转
     if (!_isEnableFix) return null;
     return () {
       setState(() {
         paras['newPwd'] = newPwd1;
         String showMsg = _checkInputText(newPwd1, newPwd2);
-        if(showMsg == ''){
+        if (showMsg == '') {
           print('token' + Constant.userConfigInfo.authtoken);
-          _changePwd(paras, Constant.userConfigInfo.authtoken).then((msg){
-            if(msg['msg'] == '密码修改成功！') {  /// 跳转
+          _changePwd(paras, Constant.userConfigInfo.authtoken).then((msg) {
+            if (msg['msg'] == '密码修改成功！') {
+              /// 跳转
               Navigator.of(context).pushAndRemoveUntil(
                   new MaterialPageRoute(builder: (context) => LoginPage()),
-                      (route) => route == null);
+                  (route) => route == null);
             }
             Constant.useFlush(msg['msg'], context);
           });
-        }else{
+        } else {
           Constant.useFlush(showMsg, context);
         }
       });
     };
   }
 
-  Widget _buildFixButton() {  ///确定按钮
+  Widget _buildFixButton() {
+    ///确定按钮
     return Container(
       margin: EdgeInsets.only(top: 15),
       width: MediaQuery.of(context).size.width,
@@ -208,7 +219,7 @@ class _ChangePwdPageState extends State<ChangePwdPage> {
         title: Text('找回密码'),
         leading: IconButton(
           icon: Icon(Icons.chevron_left, color: Colors.white),
-          onPressed: (){
+          onPressed: () {
             Navigator.of(context).pop();
           },
         ),

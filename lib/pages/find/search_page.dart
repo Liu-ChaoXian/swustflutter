@@ -10,11 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:swustflutter/config/constant.dart';
 import '../../client/swust_api_client.dart';
 
-
-
 class SearchPage extends StatefulWidget {
   ///搜索历史
-  SearchHistoryProvider searchHistoryProvider = SearchHistoryProvider();///历史记录
+  SearchHistoryProvider searchHistoryProvider = SearchHistoryProvider();
+
+  ///历史记录
 
   ExperStore experStore;
 
@@ -36,7 +36,8 @@ class SearchPageState extends State<SearchPage> {
   SwustAPIClient apiClient = new SwustAPIClient();
 
   Future<List<dynamic>> _searchKeyword(String value) async {
-    return await apiClient.getSearchList(Constant.userConfigInfo.authtoken, value);
+    return await apiClient.getSearchList(
+        Constant.userConfigInfo.authtoken, value);
   }
 
   ///搜索历史的插入与移除
@@ -111,23 +112,26 @@ class SearchPageState extends State<SearchPage> {
     value = value.trim();
     if (value.isEmpty) return;
 
-    setState(() => _searchState = SearchState.loading);///修改状态
+    setState(() => _searchState = SearchState.loading);
+
+    ///修改状态
     ///
     /// 在列表中查找实验室
-    _searchKeyWord(value).then((result){
+    _searchKeyWord(value).then((result) {
       setState(() {
         _searchState = SearchState.done;
         _searchResult = result;
       });
+
       ///保存搜索记录
       _onSearchHistoryEvent(SearchHistoryEvent.insert, SearchHistory(value));
     });
 
-    return ;
+    return;
   }
 
   void _onOpenFile(String labId) {
-      /// 跳转到实验室详情界面
+    /// 跳转到实验室详情界面
 //    Navigator.push(
 //        context,
 //        MaterialPageRoute(
@@ -211,7 +215,8 @@ class SearchPageState extends State<SearchPage> {
             width: 60,
             alignment: Alignment.centerLeft,
             child: FlatButton(
-              child: new Text('取消', style: TextStyle(color: Colors.blue, fontSize: 14)),
+              child: new Text('取消',
+                  style: TextStyle(color: Colors.blue, fontSize: 14)),
               onPressed: () => setState(() => Navigator.of(context).pop()),
               splashColor: Colors.transparent, // 去掉点击阴影效果
               highlightColor: Colors.transparent, // 去掉点击阴影效果

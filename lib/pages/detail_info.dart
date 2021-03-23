@@ -15,23 +15,23 @@ class DetailInfo extends StatefulWidget {
 }
 
 class _DetailInfoState extends State<DetailInfo> {
-
   final _normalFont = const TextStyle(fontSize: 18.0);
-  final _titleFont = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600);
+  final _titleFont =
+      const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600);
   SwustAPIClient apiClient = new SwustAPIClient();
   Map paras = {};
-  Future<Map<String, dynamic>> _applyExperiment(String token, Map paras) async{
+  Future<Map<String, dynamic>> _applyExperiment(String token, Map paras) async {
     return await apiClient.applyExperiment(paras, token);
   }
 
-  _joinExperiment(){
+  _joinExperiment() {
     return () {
       paras['labId'] = widget.experimentInfo.labId;
-      _applyExperiment(Constant.userConfigInfo.authtoken, paras).then((value){
+      _applyExperiment(Constant.userConfigInfo.authtoken, paras).then((value) {
         setState(() {
           Navigator.of(context).pushAndRemoveUntil(
               new MaterialPageRoute(builder: (context) => FindPage()),
-                  (route) => route == null);
+              (route) => route == null);
           Constant.useFlush(value['msg'], context);
         });
       });
@@ -83,7 +83,7 @@ class _DetailInfoState extends State<DetailInfo> {
                                     children: <Widget>[
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.start,
+                                            MainAxisAlignment.start,
                                         children: <Widget>[
                                           SizedBox(
                                             width: 10,
@@ -121,7 +121,7 @@ class _DetailInfoState extends State<DetailInfo> {
                                   children: <Widget>[
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.start,
+                                          MainAxisAlignment.start,
                                       children: <Widget>[
                                         SizedBox(
                                           width: 10,
@@ -153,7 +153,8 @@ class _DetailInfoState extends State<DetailInfo> {
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(left: 10),
-                                      child: Text('${widget.experimentInfo.time}',
+                                      child: Text(
+                                          '${widget.experimentInfo.time}',
                                           style: _normalFont),
                                     )
                                   ],
@@ -175,7 +176,8 @@ class _DetailInfoState extends State<DetailInfo> {
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(left: 10),
-                                      child: Text('${widget.experimentInfo.labContact}',
+                                      child: Text(
+                                          '${widget.experimentInfo.labContact}',
                                           style: _normalFont),
                                     )
                                   ],
@@ -197,7 +199,8 @@ class _DetailInfoState extends State<DetailInfo> {
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(left: 10),
-                                      child: Text('${widget.experimentInfo.detailInfo}',
+                                      child: Text(
+                                          '${widget.experimentInfo.detailInfo}',
                                           style: _normalFont),
                                     )
                                   ],
@@ -219,7 +222,8 @@ class _DetailInfoState extends State<DetailInfo> {
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(left: 10),
-                                      child: Text('${widget.experimentInfo.achievement}',
+                                      child: Text(
+                                          '${widget.experimentInfo.achievement}',
                                           style: _normalFont),
                                     )
                                   ],
@@ -250,4 +254,3 @@ class _DetailInfoState extends State<DetailInfo> {
         ));
   }
 }
-

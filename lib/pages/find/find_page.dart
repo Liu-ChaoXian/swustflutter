@@ -29,18 +29,19 @@ class _FindPageState extends State<FindPage> {
   List<dynamic> _experimentList = [];
 
   Future<List<dynamic>> _getList() async {
-    return await widget.apiClient.getExperimentList(Constant.userConfigInfo.authtoken);
+    return await widget.apiClient
+        .getExperimentList(Constant.userConfigInfo.authtoken);
   }
 
   @override
   void initState() {
     super.initState();
 //    _exper = _experimentList;
-    _getList().then((value){
-        setState(() {
-          _experimentList = value;
-          print(_experimentList.length);
-        });
+    _getList().then((value) {
+      setState(() {
+        _experimentList = value;
+        print(_experimentList.length);
+      });
     });
   }
 
@@ -51,10 +52,12 @@ class _FindPageState extends State<FindPage> {
   }
 
   /// 获取实验室详情信息
-  Future<Map<String, dynamic>>getDetailInfo(String token, String labId) async{
+  Future<Map<String, dynamic>> getDetailInfo(String token, String labId) async {
     return await widget.apiClient.getDetailInfo(labId, token);
   }
+
   Map<String, dynamic> experimentInfo;
+
   ///跳转到实验室详细信息界面
   void _onForwardDir(String labId) {
     getDetailInfo(Constant.userConfigInfo.authtoken, labId).then((value) {

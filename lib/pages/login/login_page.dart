@@ -1,3 +1,4 @@
+import 'package:swustflutter/common/SwustApi.dart';
 import 'package:swustflutter/main.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  Future<Map<String,dynamic>> _loginAccount(Map paras) async{
+  Future<Map<String, dynamic>> _loginAccount(Map paras) async {
     return await apiClient.loginAccount(paras);
   }
 
@@ -65,18 +66,20 @@ class _LoginPageState extends State<LoginPage> {
       prefs.setString(Constant.userPassword, _pwdText);
       paras['userAccount'] = _accountText;
       paras['password'] = _pwdText;
-      _loginAccount(paras).then((msg){
+      _loginAccount(paras).then((msg) {
 //          result = msg;
         setState(() {
-            if(msg['msg'] == '成功') {
-              /// 设置跳转到主页
-              Navigator.of(context).pushAndRemoveUntil(
-                  new MaterialPageRoute(builder: (context) => MyHomePage()),
-                      (route) => route == null);
-  //            Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
-              Constant.userConfigInfo = UserConfig.fromJson(msg);
-            }
+          if (msg['msg'] == '成功') {
+            /// 设置跳转到主页
+            Navigator.of(context).pushAndRemoveUntil(
+                new MaterialPageRoute(builder: (context) => MyHomePage()),
+                (route) => route == null);
+            //            Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
+            Constant.userConfigInfo = UserConfig.fromJson(msg);
+            SwustApi.init();
+          }
         });
+
         /// 调用flush函数
         Constant.useFlush('登录' + msg['msg'], context);
       });
@@ -207,8 +210,8 @@ class _LoginPageState extends State<LoginPage> {
             onPressed: () {
               Navigator.push(context,
                   new MaterialPageRoute(builder: (BuildContext context) {
-                    return new ForgetPassWord();
-                  }));
+                return new ForgetPassWord();
+              }));
             },
           )
         ],

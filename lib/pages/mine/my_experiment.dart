@@ -1,9 +1,11 @@
+import 'package:swustflutter/common/SwustApi.dart';
 import 'package:swustflutter/config/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swustflutter/model/experiment_info.dart';
 import 'package:swustflutter/pages/detail_info.dart';
 import 'package:swustflutter/pages/mine/sign_page.dart';
+import 'package:swustflutter/pages/mine/userlist_page.dart';
 import 'user_page.dart';
 import 'add_experiment.dart';
 import '../../model/user_info.dart';
@@ -127,7 +129,10 @@ class _MyExperimentState extends State<MyExperiment> {
                   Icons.location_on,
                   color: Colors.blue,
                 ),
-                method: () => {}),
+                method: () => {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => SignPage()))
+                    }),
             SizedBox(
               height: 10,
             ),
@@ -152,7 +157,12 @@ class _MyExperimentState extends State<MyExperiment> {
                   Icons.people,
                   color: Colors.yellow,
                 ),
-                method: () => {}),
+                method: () => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UserListPage()))
+                    }),
             SizedBox(
               height: 10,
             ),
@@ -182,7 +192,7 @@ class _MyExperimentState extends State<MyExperiment> {
                   Icons.directions_run_sharp,
                   color: Colors.red,
                 ),
-                method: () => {}),
+                method: a),
           ],
         );
         break;
@@ -208,7 +218,12 @@ class _MyExperimentState extends State<MyExperiment> {
                   Icons.people,
                   color: Colors.yellow,
                 ),
-                method: () => {}),
+                method: () => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UserListPage()))
+                    }),
             SizedBox(
               height: 10,
             ),
@@ -258,5 +273,10 @@ class _MyExperimentState extends State<MyExperiment> {
         ),
       ),
     );
+  }
+
+  dynamic a() async {
+    Map<String, dynamic> r = await SwustApi().Get('info', "/user/info");
+    print(r);
   }
 }

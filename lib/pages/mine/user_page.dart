@@ -57,7 +57,9 @@ class UserPage extends StatelessWidget {
                                     children: <Widget>[
                                       Text('用户头像：', style: _titleFont),
                                       ClipOval(
-                                        child: Image.network(Constant.baseUrl + _userInfo.userAvatarUrl,
+                                        child: Image.network(
+                                            Constant.baseUrl +
+                                                _userInfo.userAvatarUrl,
                                             width: 64,
                                             height: 64,
                                             fit: BoxFit.cover),

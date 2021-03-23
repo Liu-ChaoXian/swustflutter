@@ -5,14 +5,13 @@ import '../../client/swust_api_client.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:swustflutter/config/constant.dart';
 
-class RegisterAccount extends StatefulWidget{
+class RegisterAccount extends StatefulWidget {
   SwustAPIClient apiClient = new SwustAPIClient();
   @override
   createState() => _RegisterAccountState();
 }
 
 class _RegisterAccountState extends State<RegisterAccount> {
-
   final _normalFont = const TextStyle(fontSize: 18.0);
   final _borderRadius = BorderRadius.circular(6);
   bool _isEnableLogin = false;
@@ -36,8 +35,11 @@ class _RegisterAccountState extends State<RegisterAccount> {
      *    如：已经允许登录，但是用户继续输入，此时没有必要频繁调用setState）
      */
 //    print('当前状态  ${_isEnableLogin}');
-    if (_phoneNumber.isNotEmpty && _pwdText1.isNotEmpty && _pwdText2.isNotEmpty
-    && _userAccount.isNotEmpty && _userName.isNotEmpty) {
+    if (_phoneNumber.isNotEmpty &&
+        _pwdText1.isNotEmpty &&
+        _pwdText2.isNotEmpty &&
+        _userAccount.isNotEmpty &&
+        _userName.isNotEmpty) {
 //      print('进入if  ${_isEnableLogin}');
       if (_isEnableLogin) return;
     } else {
@@ -110,7 +112,9 @@ class _RegisterAccountState extends State<RegisterAccount> {
           _checkUserInput();
         },
         style: _normalFont,
-        obscureText: _obscureText1, ///是否隐藏正在编辑的文本
+        obscureText: _obscureText1,
+
+        ///是否隐藏正在编辑的文本
         decoration: InputDecoration(
             prefixIcon: Icon(Icons.lock),
             hintText: tips,
@@ -144,7 +148,9 @@ class _RegisterAccountState extends State<RegisterAccount> {
           _checkUserInput();
         },
         style: _normalFont,
-        obscureText: _obscureText2, ///是否隐藏正在编辑的文本
+        obscureText: _obscureText2,
+
+        ///是否隐藏正在编辑的文本
         decoration: InputDecoration(
             prefixIcon: Icon(Icons.lock),
             hintText: tips,
@@ -192,26 +198,31 @@ class _RegisterAccountState extends State<RegisterAccount> {
     );
   }
 
-  Future<String> _createNewAccount(Map paras) async{
+  Future<String> _createNewAccount(Map paras) async {
     String msg = await widget.apiClient.createAccount(paras);
 //    print('注册结果：$msg');
     return msg;
   }
+
   String showMsg = '';
+
   /// 输入
-  String _checkInputText(String _pwdText1, String _pwdText2, String _phoneNumber) {
+  String _checkInputText(
+      String _pwdText1, String _pwdText2, String _phoneNumber) {
     /// 两次输入的密码必须一致
-    if(_pwdText1 != _pwdText2){
+    if (_pwdText1 != _pwdText2) {
       return '两次输入的密码不一致！';
-    }else if(_pwdText1.length<6 || _pwdText1.length>16){ /// 密码长度限制
+    } else if (_pwdText1.length < 6 || _pwdText1.length > 16) {
+      /// 密码长度限制
       return '输入密码的长度应是6至16位！';
-    }else if(_phoneNumber.length != 11){
+    } else if (_phoneNumber.length != 11) {
       return '手机号码输入格式有误';
-    } else{
+    } else {
       return '';
     }
   }
-  _getRegisterButtonPressed(){
+
+  _getRegisterButtonPressed() {
     if (!_isEnableLogin) return null;
     return () {
       setState(() {
@@ -221,18 +232,19 @@ class _RegisterAccountState extends State<RegisterAccount> {
         paras['password'] = _pwdText1;
         showMsg = _checkInputText(_pwdText1, _pwdText2, _phoneNumber);
 //        print(showMsg.length);
-        if(showMsg == '') {
+        if (showMsg == '') {
 //          print(showMsg);
           _createNewAccount(paras).then((msg) {
-            if(msg == '注册成功') {  /// 跳转
+            if (msg == '注册成功') {
+              /// 跳转
               Navigator.of(context).pushAndRemoveUntil(
                   new MaterialPageRoute(builder: (context) => LoginPage()),
-                      (route) => route == null);
+                  (route) => route == null);
             }
             Constant.useFlush(msg, context);
           });
 //          print('执行新增函数后' + showMsg);
-        }else{
+        } else {
           Constant.useFlush(showMsg, context);
         }
 //        print('showMsg:${showMsg}');
@@ -240,7 +252,8 @@ class _RegisterAccountState extends State<RegisterAccount> {
     };
   }
 
-  Widget _buildRegisterButton() {  ///注册按钮
+  Widget _buildRegisterButton() {
+    ///注册按钮
     return Container(
       margin: EdgeInsets.only(top: 15),
       width: MediaQuery.of(context).size.width,

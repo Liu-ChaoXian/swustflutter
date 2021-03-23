@@ -5,6 +5,7 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:swustflutter/config/constant.dart';
 import 'package:swustflutter/pages/find/find_page.dart';
 import '../client/swust_api_client.dart';
+import 'package:swustflutter/main.dart';
 
 ///实验室详细信息界面
 class DetailInfo extends StatefulWidget {
@@ -25,17 +26,21 @@ class _DetailInfoState extends State<DetailInfo> {
   }
 
   _joinExperiment() {
-    return () {
-      paras['labId'] = widget.experimentInfo.labId;
-      _applyExperiment(Constant.userConfigInfo.authtoken, paras).then((value) {
-        setState(() {
-          Navigator.of(context).pushAndRemoveUntil(
-              new MaterialPageRoute(builder: (context) => FindPage()),
-              (route) => route == null);
-          Constant.useFlush(value['msg'], context);
-        });
+    paras['labId'] = widget.experimentInfo.labId;
+    _applyExperiment(Constant.userConfigInfo.authtoken, paras).then((value) {
+      setState(() {
+//        Navigator.of(context).pop();
+      if(value['msg'] == '提交申请成功'){
+        /// 设置跳转到主页
+        Navigator.of(context).pushAndRemoveUntil(
+            new MaterialPageRoute(builder: (context) => MyHomePage()),
+                (route) => route == null);
+        Constant.useFlush(value['msg'], context);
+      }else{
+        Constant.useFlush('申请失败，请稍后再试！', context);
+      }
       });
-    };
+    });
   }
 
   @override
@@ -57,7 +62,7 @@ class _DetailInfoState extends State<DetailInfo> {
                 height: 200,
                 child: Swiper(
                   itemBuilder: (BuildContext context, int index) {
-                    return Image.asset(
+                    return Image.network(Constant.baseUrl +
                       widget.experimentInfo.imageLink[index],
                       fit: BoxFit.fill,
                     );

@@ -1,7 +1,8 @@
 import 'dart:io';
-
+import 'package:swustflutter/config/constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:swustflutter/config/constant.dart';
 
 class ForgetPassWord extends StatefulWidget{
 
@@ -140,20 +141,13 @@ class _ForgetPassWordState extends State<ForgetPassWord> {
   String buttonValue = '获取验证码';
   int deadline = 0;
   getVerificationCode() {  ///这里有bug
-//      if(deadline == 0){
-//        deadline = 60;
-//
-//      }
-      return(){};
-//      setState(() {
-//        print(deadline);
-//        buttonValue = deadline.toString();
-//      });
-      return null;
-    }
+      return(){
+        Constant.useFlush('接口维护中，暂不可用',context);
+      };
+  }
 
 
-  Widget _buildVerificationCode() {  /// 验证码按钮
+  Widget _buildVerificationCode() {  /// 验证码
     return Container(
       margin: EdgeInsets.only(top: 15),
       width: MediaQuery.of(context).size.width,
@@ -186,7 +180,7 @@ class _ForgetPassWordState extends State<ForgetPassWord> {
             flex: 1,
             child: Container(
               height: 45,
-              child: RaisedButton(
+              child: RaisedButton(  /// 验证码按钮
                 child: Text('$buttonValue', style: TextStyle(fontSize: 14)),
                 color: Colors.blue,
                 disabledColor: Colors.black12,
@@ -207,7 +201,7 @@ class _ForgetPassWordState extends State<ForgetPassWord> {
   _getLoginButtonPressed() {  /// 确认按钮事件跳转
     if (!_isEnableFix) return null;
     return () {
-
+      Constant.useFlush('接口维护中，暂不能使用！', context);
     };
   }
 

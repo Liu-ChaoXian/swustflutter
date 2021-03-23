@@ -17,8 +17,7 @@ class MyExperiment extends StatefulWidget {
 
 class _MyExperimentState extends State<MyExperiment> {
   final _normalFont = const TextStyle(fontSize: 18.0);
-  final _titlrFont =
-      const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400);
+  final _titlrFont = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400);
   final List<String> level = ['', '普通用户', '实验室负责人', '系统管理员'];
   ExperimentInfo _experimentInfo = ExperimentInfo(
       experimentName: '数据与知识工程数据可视化的实验室',
@@ -39,9 +38,14 @@ class _MyExperimentState extends State<MyExperiment> {
   int userLevel = 2;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
+  /// 获取实验室详细信息
+  getDetailInfo() {
+
+  }
   @override
   void initState() {
     super.initState();
+
   }
 
   _getExperimentInfo() {

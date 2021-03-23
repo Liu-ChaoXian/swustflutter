@@ -3,6 +3,7 @@ import 'package:swustflutter/client/swust_api_client.dart';
 import 'package:swustflutter/config/constant.dart';
 import 'package:swustflutter/model/experiment_info.dart';
 import 'package:swustflutter/pages/mine/detail_info_judge.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class JudgeExperiment extends StatefulWidget {
   @override
@@ -33,6 +34,7 @@ class _JudgeExperimentState extends State<JudgeExperiment> {
     return experimentList.length == 0
         ? Container(
             child: Center(
+              heightFactor: 5,
               child: Column(
                 children: [
                   Icon(

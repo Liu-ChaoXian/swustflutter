@@ -3,6 +3,7 @@ import 'package:swustflutter/model/experiment_info.dart';
 import 'package:swustflutter/client/swust_api_client.dart';
 import 'personal_center.dart';
 import 'package:swustflutter/config/constant.dart';
+import 'package:swustflutter/main.dart';
 
 class DetailInfoJudgePage extends StatefulWidget {
   ExperimentInfo experimentInfo;
@@ -18,52 +19,52 @@ class _DetailInfoJudgePageState extends State<DetailInfoJudgePage> {
   SwustAPIClient apiClient = new SwustAPIClient();
   Map paras = {};
 
-  Future<dynamic> getPassJudge(Map paras) async {
+  Future<Map<String,dynamic>> getPassJudge(Map paras) async {
     print('getPassJudge');
     return await apiClient.judgeExperiment(
         paras, Constant.userConfigInfo.authtoken);
   }
 
-  Future<dynamic> getFailJudge(Map paras) async {
+  Future<Map<String,dynamic>> getFailJudge(Map paras) async {
     return await apiClient.judgeExperiment(
         paras, Constant.userConfigInfo.authtoken);
   }
 
   passJudge(String labId) {
-    return () {
-      print(labId);
-      paras['labId'] = labId;
-      paras['result'] = 'pass';
-      getPassJudge(paras).then((msg) {
-        print(msg);
-        if (msg == '审核通过') {
-          setState(() {
-            Navigator.of(context).pushAndRemoveUntil(
-                new MaterialPageRoute(builder: (context) => PersonalCenter()),
-                (route) => route == null);
-            Constant.useFlush(msg, context);
-          });
-        }
-      });
-    };
+    print(labId);
+    paras['labId'] = labId;
+    paras['result'] = 'pass';
+    getPassJudge(paras).then((value) {
+      print(value);
+      if (value['msg'] == '审核通过') {
+        setState(() {
+//          Navigator.of(context).pop();
+          /// 设置跳转到主页
+          Navigator.of(context).pushAndRemoveUntil(
+              new MaterialPageRoute(builder: (context) => MyHomePage()),
+                  (route) => route == null);
+          Constant.useFlush(value['msg'], context);
+        });
+      }
+    });
   }
 
   failJudge(String labId) {
-    return () {
-      paras['labId'] = labId;
-      paras['result'] = 'pass';
-      getFailJudge(paras).then((msg) {
-        print(msg);
-        if (msg == '审核不通过') {
-          setState(() {
-            Navigator.of(context).pushAndRemoveUntil(
-                new MaterialPageRoute(builder: (context) => PersonalCenter()),
-                (route) => route == null);
-            Constant.useFlush(msg, context);
-          });
-        }
-      });
-    };
+    paras['labId'] = labId;
+    paras['result'] = 'fail';
+    getFailJudge(paras).then((value) {
+      print(value);
+      if (value['msg'] == '审核不通过') {
+        setState(() {
+//          Navigator.of(context).pop();
+          /// 设置跳转到主页
+          Navigator.of(context).pushAndRemoveUntil(
+              new MaterialPageRoute(builder: (context) => MyHomePage()),
+                  (route) => route == null);
+          Constant.useFlush(value['msg'], context);
+        });
+      }
+    });
   }
 
   @override

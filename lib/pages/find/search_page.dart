@@ -35,7 +35,8 @@ class SearchPageState extends State<SearchPage> {
   List<dynamic> _searchResult = [];
   SwustAPIClient apiClient = new SwustAPIClient();
 
-  Future<List<dynamic>> _searchKeyword(String value) async {
+  /// 根据关键词搜索实验室
+  Future<List<dynamic>> _searchExperimentBykeyword(String value) async {
     return await apiClient.getSearchList(
         Constant.userConfigInfo.authtoken, value);
   }
@@ -115,9 +116,8 @@ class SearchPageState extends State<SearchPage> {
     setState(() => _searchState = SearchState.loading);
 
     ///修改状态
-    ///
-    /// 在列表中查找实验室
-    _searchKeyWord(value).then((result) {
+    /// 根据关键词查找实验室
+    _searchExperimentBykeyword(value).then((result) {
       setState(() {
         _searchState = SearchState.done;
         _searchResult = result;
@@ -129,14 +129,19 @@ class SearchPageState extends State<SearchPage> {
 
     return;
   }
-
+  ///根据实验室ID获取实验室详细信息
+  Future<Map<String, dynamic>> getExperimentByInfo(String labId) async{
+    return await apiClient.getDetailInfo(labId, Constant.userConfigInfo.authtoken);
+  }
+  ExperimentInfo experimentInfo;
+  /// 跳转到实验室详情界面
   void _onOpenFile(String labId) {
-    /// 跳转到实验室详情界面
-//    Navigator.push(
-//        context,
-//        MaterialPageRoute(
-//            builder: (context) =>
-//                DetailInfo(experimentInfo: experimentInfo)));
+    getExperimentByInfo(labId).then((value) {
+        experimentInfo = ExperimentInfo.fromJsonAll(value);
+        Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                DetailInfo(experimentInfo: experimentInfo)));
+    });
+
   }
 
   void _onSearchTextChanged(String value) {
@@ -170,7 +175,7 @@ class SearchPageState extends State<SearchPage> {
 
   Widget _buildLoadingWidget() {
     return Center(
-      heightFactor: 6,
+      heightFactor: 5,
       child: Column(
         children: <Widget>[
           CircularProgressIndicator(strokeWidth: 4.0),

@@ -37,6 +37,8 @@ class _PersonalCenterState extends State<PersonalCenter> {
   _getInfo(String token) async {
     Map<String, dynamic> value = await apiClient.getUserInfo(token);
     print(value['userName']);
+    print('labs:');
+    print(value['labs']);
     return value;
   }
 
@@ -306,12 +308,11 @@ class _PersonalCenterState extends State<PersonalCenter> {
     switch (_state) {
       case GetState.loading:
         return Center(
+          heightFactor: 5,
           child: Column(
-            children: [
-              CircularProgressIndicator(
-                strokeWidth: 4.0,
-              ),
-              Text('正在加载')
+            children: <Widget>[
+              CircularProgressIndicator(strokeWidth: 4.0),
+              Text('正在搜索')
             ],
           ),
         );

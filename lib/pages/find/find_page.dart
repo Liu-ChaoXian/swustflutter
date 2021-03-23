@@ -77,17 +77,17 @@ class _FindPageState extends State<FindPage> {
   Widget _buildExperWidget() {
     switch (_filesState) {
       case FindState.loading:
-
         ///加载中
-        return Column(children: <Widget>[
-          SizedBox(height: 200),
-          CircularProgressIndicator(strokeWidth: 4.0),
-          Text('正在加载')
-        ]);
+        return Center(
+          heightFactor: 5,
+          child: Column(children: <Widget>[
+            CircularProgressIndicator(strokeWidth: 4.0),
+            Text('正在加载')
+          ]),
+        );
       case FindState.loaded:
         return ExperimentListWidget(_experimentList, onFileTap: _onForwardDir);
       case FindState.fail:
-
         ///加载失败
         return Column(children: <Widget>[
           SizedBox(height: 200),

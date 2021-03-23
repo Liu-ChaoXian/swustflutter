@@ -3,6 +3,7 @@ import 'package:swustflutter/client/swust_api_client.dart';
 import 'package:swustflutter/config/constant.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:swustflutter/pages/mine/personal_center.dart';
+import 'package:swustflutter/main.dart';
 
 class AddExperiment extends StatefulWidget {
   @override
@@ -72,7 +73,7 @@ class _AddExperimentState extends State<AddExperiment> {
       _createExperiment(paras, token).then((value) {
         setState(() {
           Navigator.of(context).pushAndRemoveUntil(
-              new MaterialPageRoute(builder: (context) => PersonalCenter()),
+              new MaterialPageRoute(builder: (context) => MyHomePage()),
               (route) => route == null);
           Constant.useFlush(value['msg'], context);
         });

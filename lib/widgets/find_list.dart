@@ -23,10 +23,10 @@ class ExperimentListWidget extends StatelessWidget {
   ///用ListView.builder展示实验室信息
   Widget _buildFilesWidget() => this.experiment.length == 0
       ? Center(
+          heightFactor: 5,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: 200),
               Icon(
                 Icons.hourglass_empty,
                 size: 40,

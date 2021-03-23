@@ -125,6 +125,7 @@ class SwustAPIClient {
   Future<Map<String, dynamic>> getUserInfo(String token) async {
     Map<String, dynamic> header = {
       "auth-token": token,
+      'Content-Type': 'application/json'
     };
     Options options = Options(headers: header);
     var apiUrl = baseUrl + "/user/info";
@@ -136,7 +137,7 @@ class SwustAPIClient {
       return response.data;
     } on DioError catch (e) {
       /// 异常捕获
-      print('获取用户信息：' + e.response.data);
+      print('获取用户信息异常：' + e.response.data);
       return e.response.data;
     }
   }
@@ -184,27 +185,25 @@ class SwustAPIClient {
   }
 
   /// 审核实验室
-  Future<dynamic> judgeExperiment(Map paras, String token) async {
+  Future<Map<String,dynamic>> judgeExperiment(Map paras, String token) async{
     Map<String, dynamic> header = {
       "auth-token": token,
       'Content-Type': 'application/json'
     };
     Options options = Options(headers: header);
     var apiUrl = baseUrl + "/lab/examine/lab";
-    try {
+    try{
       print(paras);
-      Response response =
-          await Dio().post(apiUrl, data: paras, options: options);
+      Response response = await Dio().post(apiUrl, data: paras, options: options);
       print('审核实验室：${response.data}');
-
       /// 获取到的是Map类型
-      return response.data['msg'];
-    } on DioError catch (e) {
-      /// 异常捕获
+      return response.data;
+    }on DioError catch(e){  /// 异常捕获
       print('审核实验室：' + e.response.data);
       return e.response.data;
     }
   }
+
 
   /// 获取实验室详情信息
   Future<Map<String, dynamic>> getDetailInfo(String labId, String token) async {
@@ -239,7 +238,6 @@ class SwustAPIClient {
       Response response =
           await Dio().post(apiUrl, data: paras, options: options);
       print('用户申请加入实验室：${response.data}');
-
       /// 获取到的是Map类型
       return response.data;
     } on DioError catch (e) {
@@ -260,7 +258,6 @@ class SwustAPIClient {
     try {
       Response response = await Dio().get(apiUrl, options: options);
       print('搜索实验室：${response.data}');
-
       /// 获取到的是Map类型
       return response.data['labs'];
     } on DioError catch (e) {

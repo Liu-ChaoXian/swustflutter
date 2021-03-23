@@ -19,6 +19,8 @@ class UserInfo {///用户信息
   String userEmail;
   /// 用户类型
   int userType;
+  /// 加入的实验室
+  List<dynamic> labs;
 
   UserInfo({
     this.userAccount,
@@ -41,6 +43,7 @@ class UserInfo {///用户信息
     this.userClass = json['userClass'];
     this.userEmail = json['userEmail'];
     this.userType = json['userType'];
+    this.labs = json['labs'];
   }
 
   Map<String, dynamic> toJson(){

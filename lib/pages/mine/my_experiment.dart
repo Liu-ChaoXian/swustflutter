@@ -40,12 +40,20 @@ class _MyExperimentState extends State<MyExperiment> {
   @override
   void initState() {
     super.initState();
-    getDetailInfo().then((value) {
+    print('labs的长度：' + Constant.userInfo.labs.length.toString());
+    if(Constant.userInfo.labs.length != 0){
+      print('labs的长度：' + Constant.userInfo.labs.length.toString());
+      getDetailInfo().then((value) {
+        setState(() {
+          _experimentInfo = ExperimentInfo.fromJsonAll(value);
+          _state = GetState.loaded;
+        });
+      });
+    }else{
       setState(() {
-        _experimentInfo = ExperimentInfo.fromJsonAll(value);
         _state = GetState.loaded;
       });
-    });
+    }
   }
 
   _getExperimentInfo() {

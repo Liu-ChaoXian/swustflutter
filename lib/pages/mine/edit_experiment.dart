@@ -21,6 +21,15 @@ class _EditExperimentState extends State<EditExperiment> {
   ///实验室简介
   String detailInfo;
 
+  /// 实验室地址
+  String newLabAddr;
+
+  /// 实验室成果
+  String newLabHonor;
+
+  /// 招新时间
+  String newLabRecruitTime;
+
   bool _isEnableLogin = false;
   final _normalFont = const TextStyle(fontSize: 18.0);
   final _borderRadius = BorderRadius.circular(6);
@@ -51,6 +60,10 @@ class _EditExperimentState extends State<EditExperiment> {
       paras['labId'] = Constant.userInfo.labs[0];
       paras['newIntro'] = detailInfo;
       paras['newContact'] = labContact;
+      paras['newLabAddr'] = newLabAddr;
+      paras['newLabHonor'] = newLabHonor;
+      paras['newLabRecruitTime'] = newLabRecruitTime;
+
       _editExperiment().then((value) {
         setState(() {
           Navigator.of(context).pushAndRemoveUntil(
@@ -140,6 +153,69 @@ class _EditExperimentState extends State<EditExperiment> {
                 SizedBox(
                   height: 10,
                 ),
+                TextField(
+                  onChanged: (text) {
+                    newLabAddr = text;
+                    _checkUserInput();
+                  },
+                  style: _normalFont,
+                  maxLines: 1,
+                  decoration: InputDecoration(
+                    hintText: '请输入实验室地址',
+                    labelText: '实验室地址',
+                    filled: true,
+                    fillColor: Color.fromARGB(255, 240, 240, 240),
+                    contentPadding: EdgeInsets.only(left: 8),
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: _borderRadius),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  onChanged: (text) {
+                    newLabHonor = text;
+                    _checkUserInput();
+                  },
+                  style: _normalFont,
+                  maxLines: 2,
+                  decoration: InputDecoration(
+                    hintText: '请输入实验室成果',
+                    labelText: '实验室成果',
+                    filled: true,
+                    fillColor: Color.fromARGB(255, 240, 240, 240),
+                    contentPadding: EdgeInsets.only(left: 8),
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: _borderRadius),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  onChanged: (text) {
+                    newLabRecruitTime = text;
+                    _checkUserInput();
+                  },
+                  style: _normalFont,
+                  maxLines: 1,
+                  decoration: InputDecoration(
+                    hintText: '请输入实验室招新',
+                    labelText: '实验室招新',
+                    filled: true,
+                    fillColor: Color.fromARGB(255, 240, 240, 240),
+                    contentPadding: EdgeInsets.only(left: 8),
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: _borderRadius),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 Container(
                   width: MediaQuery.of(context).size.width,
                   child: RaisedButton(
@@ -153,7 +229,7 @@ class _EditExperimentState extends State<EditExperiment> {
                       ),
                       onPressed: _editButtonPressed(
                           Constant.userConfigInfo.authtoken)),
-                )
+                ),
               ],
             ),
           ),

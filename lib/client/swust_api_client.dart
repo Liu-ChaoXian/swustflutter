@@ -325,6 +325,25 @@ class SwustAPIClient {
       print('用户修改用户资料：' + e.response.data);
       return e.response.data;
     }
+  }
 
+  /// 用户删除实验室
+  Future<Map<String, dynamic>> deleteExperiment(String token, Map paras) async {
+    Map<String, dynamic> header = {
+      "auth-token": token,
+      'Content-Type': 'application/json'
+    };
+    Options options = Options(headers: header);
+    var apiUrl = baseUrl + "/lab/delete/lab";
+    try{
+      print(paras);
+      Response response = await Dio().post(apiUrl, data: paras, options: options);
+      print('用户删除实验室：${response.data}');
+      /// 获取到的是Map类型
+      return response.data;
+    }on DioError catch(e){  /// 异常捕获
+      print('用户删除实验室：' + e.response.data);
+      return e.response.data;
+    }
   }
 }

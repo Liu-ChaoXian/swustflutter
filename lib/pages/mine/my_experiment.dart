@@ -58,6 +58,20 @@ class _MyExperimentState extends State<MyExperiment> {
                   )));
     };
   }
+  Map paras = {};
+  _deleteExperiment(Map paras) async{
+    return await apiClient.deleteExperiment(Constant.userConfigInfo.authtoken, paras);
+  }
+
+  _pressDeleteExperiment() {
+    paras['labId'] = Constant.userInfo.labs[0];
+    _deleteExperiment(paras).then((value){
+      if(value['msg'] == '删除实验室成功'){
+        Navigator.of(context).pop();
+        Constant.useFlush('解散实验室成功', context);
+      }
+    });
+  }
 
   Widget _buildInfo() {
     return InkWell(
@@ -209,7 +223,9 @@ class _MyExperimentState extends State<MyExperiment> {
                   Icons.directions_run_sharp,
                   color: Colors.red,
                 ),
-                method: () => {}),
+                method: () {
+                  _pressDeleteExperiment();
+                }),
           ],
         );
         break;
@@ -222,13 +238,13 @@ class _MyExperimentState extends State<MyExperiment> {
                   Icons.location_on,
                   color: Colors.blue,
                 ),
-                method: () => {
+                method: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => SignPage(
                                     text: "签到成功",
-                                  )))
+                                  )));
                     }),
             SizedBox(
               height: 10,

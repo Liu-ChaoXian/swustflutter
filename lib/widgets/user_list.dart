@@ -1,20 +1,23 @@
+import 'package:swustflutter/common/SwustApi.dart';
+import 'package:swustflutter/config/constant.dart';
 import 'package:swustflutter/model/user_info.dart';
 
 import 'package:flutter/material.dart';
 
-class UserListWidget extends StatelessWidget {
-  ///实验室列表
-
+class UserListWidget extends StatefulWidget {
   List users;
+  UserListWidget({Key key, @required this.users}) : super(key: key);
+  @override
+  State<StatefulWidget> createState() => _UserListState();
+}
 
-  UserListWidget(
-    this.users,
-  );
+class _UserListState extends State<UserListWidget> {
+  ///实验室列表
 
   @override
   Widget build(BuildContext context) => _buildFilesWidget();
 
-  Widget _buildFilesWidget() => this.users.length == 0
+  Widget _buildFilesWidget() => widget.users.length == 0
       ? Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -31,13 +34,13 @@ class UserListWidget extends StatelessWidget {
       : ListView.builder(
           physics: BouncingScrollPhysics(),
           shrinkWrap: true,
-          itemCount: this.users.length,
+          itemCount: widget.users.length,
           itemBuilder: (BuildContext context, int index) {
-            return _buildUserItem(this.users[index]);
+            return _buildUserItem(widget.users[index], context);
           },
         );
 
-  Widget _buildUserItem(Map userInfo) {
+  Widget _buildUserItem(Map userInfo, BuildContext context) {
     return InkWell(
       child: Container(
         alignment: Alignment.center,
@@ -48,16 +51,32 @@ class UserListWidget extends StatelessWidget {
         child: ListTile(
           contentPadding: EdgeInsets.all(5),
           leading: Icon(Icons.person),
+          trailing: ElevatedButton(
+              child: Text('删除'),
+              onPressed: () async {
+                Map<String, dynamic> params = {
+                  "memberId": userInfo['memberId']
+                };
+                Map<String, dynamic> value = await SwustApi()
+                    .Post('删除实验室成员', '/lab/delete/member', json: params);
+                Constant.useFlush("${value['msg']}+,请重新进入该页面", context);
+                // if(value['msg']==)
+              }),
           title: Row(
             children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text("学号:      " + userInfo['memberId']),
-                  Text("姓名:      " + userInfo['memberName']),
-                  Divider(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("学号:      " + userInfo['memberId']),
+                      Text("姓名:      " + userInfo['memberName']),
+                      Divider(),
+                    ],
+                  ),
                 ],
-              ),
+              )
             ],
           ),
         ),

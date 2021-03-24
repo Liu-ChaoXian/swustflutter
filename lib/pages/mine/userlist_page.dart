@@ -61,7 +61,7 @@ class _UserListState extends State<UserListPage> {
           Text('正在加载')
         ]);
       case UserListState.loaded:
-        return UserListWidget(users);
+        return UserListWidget(users: users);
       case UserListState.fail:
 
         ///加载失败
